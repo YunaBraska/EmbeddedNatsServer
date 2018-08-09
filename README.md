@@ -16,7 +16,7 @@ Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-serve
 ```java
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@EnableNatsServer(port = 4222, natsServerConfig = {"user:admin", "password:admin"})
+@EnableNatsServer(port = 4222, natsServerConfig = {"user:admin", "pass:admin"})
 public class SomeTest {
     [...]
 }
