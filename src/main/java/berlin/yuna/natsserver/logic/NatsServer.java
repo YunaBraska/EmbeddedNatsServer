@@ -15,7 +15,6 @@ import java.net.ConnectException;
 import java.net.PortUnreachableException;
 import java.net.Socket;
 import java.nio.file.Path;
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,7 +48,7 @@ public class NatsServer implements DisposableBean {
      * simpleName from {@link NatsServer} class
      */
     private static final Logger LOG = getLogger(NatsServer.class);
-    private static final String NATS_SERVER_VERSION = "v0.9.2";
+    private static final String NATS_SERVER_VERSION = "v0.10.2";
     public static final String BEAN_NAME = NatsServer.class.getSimpleName();
     private static final OperatingSystem OPERATING_SYSTEM = getOsType();
 
