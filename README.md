@@ -34,7 +34,7 @@ nats:
 nats.server.hb_fail_count=3
 ```
 ### TODO
-* Port issues on CI - Seems that the test context is restarting much faster than the ports are shutting down - at least some times
+* YAY - i got them all! there are no TODOs left :)
 
 ![nats-streaming-server-embedded](src/test/resources/banner.png "nats-streaming-server-embedded")
 

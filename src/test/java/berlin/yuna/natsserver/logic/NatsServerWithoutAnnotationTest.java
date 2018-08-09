@@ -21,7 +21,7 @@ import static berlin.yuna.natsserver.config.NatsServerConfig.MAX_AGE;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PASS;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static berlin.yuna.natsserver.config.NatsServerConfig.USER;
-import static berlin.yuna.natsserver.util.SystemUtil.OperatingSystem.WINDOWS;
+import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

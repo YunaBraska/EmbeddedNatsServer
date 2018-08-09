@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.net.Socket;
 
-import static berlin.yuna.natsserver.util.SystemUtil.getOsType;
+import static berlin.yuna.system.logic.SystemUtil.getOsType;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -25,8 +25,7 @@ public class NatsServerComponentTest {
     private NatsServer natsServer;
 
     @Test
-    public void natsServer_shouldStart() throws IOException {
-        new Socket("localhost", 4222).close();
+    public void natsServer_shouldStart() {
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.getPort(), is(4222));
         natsServer.stop();

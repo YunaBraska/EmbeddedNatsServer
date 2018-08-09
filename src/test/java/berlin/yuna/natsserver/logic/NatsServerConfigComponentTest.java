@@ -1,25 +1,22 @@
 package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.natsserver.util.StreamGobbler;
+import berlin.yuna.system.logic.Terminal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static berlin.yuna.natsserver.util.SystemUtil.executeCommand;
-import static berlin.yuna.natsserver.util.SystemUtil.getOsType;
+import static berlin.yuna.system.logic.SystemUtil.getOsType;
 import static java.util.Arrays.stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,12 +28,15 @@ import static org.hamcrest.Matchers.empty;
 public class NatsServerConfigComponentTest {
 
     @Test
-    public void compareNatsServerConfig() throws IOException, InterruptedException {
+    public void compareNatsServerConfig() {
         Path natsServerPath = new NatsServer().getNatsServerPath(getOsType());
 
-        Process process = executeCommand(natsServerPath.toString() + " --help");
+        StringBuilder console = new StringBuilder();
 
-        List<String> consoleConfigKeys = readConfigKeys(consoleOutput(process));
+        Terminal terminal = new Terminal().execute(natsServerPath.toString() + " --help");
+        console.append(terminal.consoleInfo()).append(terminal.consoleError());
+
+        List<String> consoleConfigKeys = readConfigKeys(console.toString());
         List<String> javaConfigKeys = stream(NatsServerConfig.values()).map(Enum::name).collect(Collectors.toList());
 
         Set<String> missingConfigInJava = getNotMatchingEntities(consoleConfigKeys, javaConfigKeys);
@@ -73,18 +73,5 @@ public class NatsServerConfigComponentTest {
             allMatches.add(m.group(1).toUpperCase());
         }
         return allMatches;
-    }
-
-    private String consoleOutput(Process process) throws InterruptedException {
-        StringBuilder console = new StringBuilder();
-        Executors.newSingleThreadExecutor().submit(new StreamGobbler(process.getInputStream(), line -> console.append(line).append("\n")));
-        Executors.newSingleThreadExecutor().submit(new StreamGobbler(process.getErrorStream(), line -> console.append(line).append("\n")));
-
-        int count;
-        do {
-            count = console.length();
-            Thread.sleep(256);
-        } while (count == 0 || count != console.length());
-        return console.toString();
     }
 }
