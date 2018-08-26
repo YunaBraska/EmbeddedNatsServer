@@ -7,7 +7,7 @@
     <parent>
         <groupId>berlin.yuna</groupId>
         <artifactId>maven-oss-parent</artifactId>
-        <version>0.0.1</version>
+        <version>0.2.0</version>
     </parent>
 
     <groupId>berlin.yuna</groupId>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>berlin.yuna</groupId>
             <artifactId>config-metadata-generator</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -48,6 +48,7 @@ public enum NatsServerConfig {
     FILE_SLICE_ARCHIVE_SCRIPT(null, "[STRING] Path to script to use if you want to archive a file slice being removed"),
     FILE_FDS_LIMIT(null, "[INT] Store will try to use no more file descriptors than this given limit"),
     FILE_PARALLEL_RECOVERY(null, "[INT] On startup, number of channels that can be recovered in parallel"),
+    FILE_TRUNCATE_BAD_EOF(null, "[BOOL] Truncate files for which there is an unexpected EOF on recovery, dataloss may occur"),
 
     //Streaming Server SQL Store Options
     SQL_DRIVER(null, "[STRING] Name of the SQL Driver (\"mysql\" or \"postgres\")"),

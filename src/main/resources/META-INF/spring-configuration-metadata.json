@@ -99,7 +99,7 @@
     "type" : "java.lang.String",
     "description" : "ID of the node within the cluster if there is no stored ID (default: random UUID)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig",
-    "defaultValue" : "d7b1f065-3bdd-40b7-8d44-20d1c9e94b52"
+    "defaultValue" : "db51e187-5447-4848-9382-189e0448d2bc"
   }, {
     "name" : "nats.server.cluster_bootstrap",
     "type" : "java.lang.Boolean",
@@ -212,6 +212,11 @@
     "name" : "nats.server.file_parallel_recovery",
     "type" : "java.lang.Integer",
     "description" : "On startup, number of channels that can be recovered in parallel",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
+    "name" : "nats.server.file_truncate_bad_eof",
+    "type" : "java.lang.Boolean",
+    "description" : "Truncate files for which there is an unexpected EOF on recovery, dataloss may occur",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
     "name" : "nats.server.sql_driver",

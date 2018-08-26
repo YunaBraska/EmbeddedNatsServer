@@ -33,7 +33,7 @@ public class NatsServerConfigComponentTest {
 
         StringBuilder console = new StringBuilder();
 
-        Terminal terminal = new Terminal().execute(natsServerPath.toString() + " --help");
+        Terminal terminal = new Terminal().timeoutMs(10000).execute(natsServerPath.toString() + " --help");
         console.append(terminal.consoleInfo()).append(terminal.consoleError());
 
         List<String> consoleConfigKeys = readConfigKeys(console.toString());
