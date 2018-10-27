@@ -1,6 +1,9 @@
 package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
+import berlin.yuna.system.logic.SystemUtil;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,8 @@ public class NatsServerComponentTest {
     private NatsServer natsServer;
 
     @Test
-    public void natsServer_shouldStart() {
+    public void natsServer_shouldDownloadUnzipAndStart() {
+        natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.getPort(), is(4222));
         natsServer.stop();

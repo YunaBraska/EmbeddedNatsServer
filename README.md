@@ -30,11 +30,19 @@ nats:
     hb_fail_count: 3
 ```
 
+* See [NatsServerSourceConfig](https://github.com/YunaBraska/nats-streaming-server-embedded/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsServerSourceConfig.java) class for optional available nats version configuration
+```yaml
+nats:
+  source:
+    windows: "https://nats-windows.zip"
+    default: "https://nats-linux.zip"
+```
+
 ```properties
 nats.server.hb_fail_count=3
 ```
 ### TODO
-* YAY - i got them all! there are no TODOs left :)
+* No autocompletion for NatsServerSourceConfig - MetaConfigurator need update for multiple groups
 
 ![nats-streaming-server-embedded](src/test/resources/banner.png "nats-streaming-server-embedded")
 

@@ -1,6 +1,7 @@
 package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.config.NatsServerConfig;
+import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import berlin.yuna.system.logic.SystemUtil;
 import berlin.yuna.system.logic.SystemUtil.OperatingSystem;
 import berlin.yuna.system.logic.Terminal;
@@ -9,27 +10,34 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ConnectException;
 import java.net.PortUnreachableException;
 import java.net.Socket;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.MissingFormatArgumentException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static berlin.yuna.system.logic.SystemUtil.getOsType;
 import static berlin.yuna.system.logic.SystemUtil.killProcessByName;
+import static java.nio.channels.Channels.newChannel;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_WRITE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
+import static java.util.Comparator.comparingLong;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -48,11 +56,12 @@ public class NatsServer implements DisposableBean {
      * simpleName from {@link NatsServer} class
      */
     private static final Logger LOG = getLogger(NatsServer.class);
-    private static final String NATS_SERVER_VERSION = "v0.10.2";
     public static final String BEAN_NAME = NatsServer.class.getSimpleName();
     private static final OperatingSystem OPERATING_SYSTEM = getOsType();
+    private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
     private Process process;
+    private String natsServerSource = NatsServerSourceConfig.LINUX.getDefaultValue();
     private Map<NatsServerConfig, String> natsServerConfig = getDefaultConfig();
 
     /**
@@ -135,7 +144,7 @@ public class NatsServer implements DisposableBean {
 
         Path natsServerPath = getNatsServerPath(OPERATING_SYSTEM);
         SystemUtil.setFilePermissions(natsServerPath, OWNER_EXECUTE, OTHERS_EXECUTE, OWNER_READ, OTHERS_READ, OWNER_WRITE, OTHERS_WRITE);
-        LOG.info("Starting [{}] port [{}] version [{}-{}]", BEAN_NAME, getPort(), NATS_SERVER_VERSION, OPERATING_SYSTEM);
+        LOG.info("Starting [{}] port [{}] version [{}-{}]", BEAN_NAME, getPort(), OPERATING_SYSTEM);
 
         String command = prepareCommand(natsServerPath);
 
@@ -146,7 +155,7 @@ public class NatsServer implements DisposableBean {
         if (!waitForPort(false)) {
             throw new PortUnreachableException(BEAN_NAME + "failed to start.");
         }
-        LOG.info("Started [{}] port [{}] version [{}-{}]", BEAN_NAME, getPort(), NATS_SERVER_VERSION, OPERATING_SYSTEM);
+        LOG.info("Started [{}] port [{}] version [{}-{}]", BEAN_NAME, getPort(), OPERATING_SYSTEM);
     }
 
     /**
@@ -198,12 +207,44 @@ public class NatsServer implements DisposableBean {
      * @return Resource/{SIMPLE_CLASS_NAME}/{NATS_SERVER_VERSION}/{OPERATING_SYSTEM}/{SIMPLE_CLASS_NAME}
      */
     Path getNatsServerPath(final OperatingSystem operatingSystem) {
-        StringBuilder relativeResource = new StringBuilder();
-        relativeResource.append(BEAN_NAME.toLowerCase()).append(File.separator);
-        relativeResource.append(NATS_SERVER_VERSION).append(File.separator);
-        relativeResource.append(operatingSystem.toString().toLowerCase()).append(File.separator);
-        relativeResource.append(BEAN_NAME.toLowerCase()).append((operatingSystem == WINDOWS ? ".exe" : ""));
-        return SystemUtil.copyResourceToTemp(getClass(), relativeResource.toString());
+        StringBuilder targetPath = new StringBuilder();
+        targetPath.append(BEAN_NAME.toLowerCase()).append(File.separator);
+        targetPath.append(BEAN_NAME.toLowerCase()).append((operatingSystem == WINDOWS ? ".exe" : ""));
+
+        return downloadNats(targetPath);
+    }
+
+    /**
+     * Url to find nats server source
+     *
+     * @param natsServerUrl url of the source {@link berlin.yuna.natsserver.config.NatsServerSourceConfig}
+     */
+    public void setNatsServerSource(final String natsServerUrl) {
+        this.natsServerSource = natsServerUrl;
+    }
+
+    private Path downloadNats(final StringBuilder targetPath) {
+        File tmpFile = new File(TMP_DIR, (new File(targetPath.toString())).getName());
+        if (!tmpFile.exists()) {
+            try {
+                File zipFile = new File(tmpFile.getParent(), tmpFile.getName() + ".zip");
+                tmpFile.getParentFile().mkdirs();
+                FileOutputStream fos = new FileOutputStream(zipFile);
+                fos.getChannel().transferFrom(newChannel(new URL(natsServerSource).openStream()), 0, Long.MAX_VALUE);
+                return unzip(zipFile, tmpFile);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return tmpFile.toPath();
+    }
+
+    private Path unzip(final File source, final File target) throws IOException {
+        final ZipFile zipFile = new ZipFile(source);
+        ZipEntry max = zipFile.stream().max(comparingLong(ZipEntry::getSize)).get();
+        Files.copy(zipFile.getInputStream(max), target.toPath());
+        source.delete();
+        return target.toPath();
     }
 
     private boolean waitForPort(boolean isFree) {
@@ -260,7 +301,7 @@ public class NatsServer implements DisposableBean {
     @Override
     public String toString() {
         return BEAN_NAME + "{" +
-                "NATS_SERVER_VERSION=" + NATS_SERVER_VERSION +
+                "NATS_SERVER_VERSION=" + natsServerSource +
                 ", OPERATING_SYSTEM=" + OPERATING_SYSTEM +
                 ", port=" + getPort() +
                 '}';

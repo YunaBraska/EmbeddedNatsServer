@@ -3,6 +3,7 @@ package berlin.yuna.natsserver.util;
 
 import berlin.yuna.configmetadata.model.ConfigurationMetadata;
 import berlin.yuna.natsserver.config.NatsServerConfig;
+import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,15 +21,27 @@ public class ConfigMetadata {
 
     @Test
     public void generate() throws IOException {
-        ConfigurationMetadata metadata = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
+        //Fixme: two groups "getGroups().get(0);" at buildJson
+        //FIXME: should overwrite old config
+//        ConfigurationMetadata metadata2 = new ConfigurationMetadata("nats.source", NatsServerSourceConfig.class);
+//        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
+//            String name = config.name().toLowerCase();
+//            String desc = config.getDescription();
+//            metadata2.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
+//        }
+//
+//        Path generated = metadata2.generate();
+//        assertThat(generated, is(notNullValue()));
 
+
+        ConfigurationMetadata metadata1 = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
         for (NatsServerConfig config : NatsServerConfig.values()) {
             String name = config.name().toLowerCase();
             String desc = config.getDescription();
-            metadata.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
+            metadata1.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
         }
 
-        Path generated = metadata.generate();
+        Path generated = metadata1.generate();
         assertThat(generated, is(notNullValue()));
     }
 

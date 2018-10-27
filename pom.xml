@@ -12,11 +12,12 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>nats-streaming-server-embedded</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Nats streaming server embedded for testing which contains the original Nats streaming server</description>
+    <description>Nats streaming server embedded for testing which contains the original Nats streaming server
+    </description>
     <url>${git-project.url}</url>
 
     <developers>
