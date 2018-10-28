@@ -57,6 +57,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         try {
             natsServerBean.start();
         } catch (Exception e) {
+            natsServerBean.stop();
             throw new IllegalArgumentException("Failed to initialise " + EnableNatsServer.class.getSimpleName(), e);
         }
 

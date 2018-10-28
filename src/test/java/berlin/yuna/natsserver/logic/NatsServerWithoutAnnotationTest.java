@@ -43,7 +43,7 @@ public class NatsServerWithoutAnnotationTest {
     @Test
     public void natsServer_withoutAnnotation_shouldNotBeStarted() throws Exception {
         expectedException.expect(ConnectException.class);
-        new Socket("localhost", 4222).close();
+        new Socket("localhost", 4245).close();
     }
 
     @Test
@@ -56,7 +56,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_configureConfig_shouldNotOverwriteOldConfig() {
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4240).setSource(natsSource);
         natsServer.setNatsServerConfig("user:adminUser", "PAss:adminPw");
 
         assertThat(natsServer.getNatsServerConfig().get(USER), is(equalTo("adminUser")));
@@ -74,7 +74,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_invalidConfig_shouldNotRunIntroException() {
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4240).setSource(natsSource);
         natsServer.setNatsServerConfig("user:adminUser:password", " ", "auth:isValid", "");
         assertThat(natsServer.getNatsServerConfig().size(), is(22));
         assertThat(natsServer.getNatsServerConfig().get(AUTH), is(equalTo("isValid")));
@@ -114,20 +114,20 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_stopWithoutStart_shouldNotRunIntroExceptionOrInterrupt() {
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4241).setSource(natsSource);
         natsServer.stop();
     }
 
     @Test
     public void natsServer_withoutPort_shouldThrowMissingFormatArgumentException() {
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4242).setSource(natsSource);
         natsServer.stop();
     }
 
     @Test
     public void natsServer_withNullablePortValue_shouldThrowMissingFormatArgumentException() {
         expectedException.expect(MissingFormatArgumentException.class);
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4243).setSource(natsSource);
         natsServer.getNatsServerConfig().put(PORT, null);
         natsServer.getPort();
     }
@@ -150,7 +150,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServerOnWindows_shouldAddExeToPath() {
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4244).setSource(natsSource);
         String windowsNatsServerPath = natsServer.getNatsServerPath(WINDOWS).toString();
         String expectedExe = NatsServer.BEAN_NAME.toLowerCase() + ".exe";
         assertThat(windowsNatsServerPath, containsString(expectedExe));
@@ -160,7 +160,7 @@ public class NatsServerWithoutAnnotationTest {
     public void natsServerWithoutSourceUrl_shouldThrowException() throws IOException {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("MalformedURLException");
-        NatsServer natsServer = new NatsServer().setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4239).setSource(natsSource);
         natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
         natsServer.setSource(null);
         natsServer.start();

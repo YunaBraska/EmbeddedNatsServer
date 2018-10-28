@@ -1,6 +1,6 @@
 language: java
 sudo: false
-script: mvn clean verify -Dnats.source.default="file://${user.dir}/src/test/resources/natsserver/linux.zip"
+script: mvn clean verify -Dnats.source.default='file://${user.dir}/src/test/resources/natsserver/linux.zip'
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) -t f5e9a171-6ca3-494a-b393-4162e319f20a
