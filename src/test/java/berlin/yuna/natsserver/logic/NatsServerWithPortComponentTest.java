@@ -26,7 +26,7 @@ public class NatsServerWithPortComponentTest {
     public void natsServer_customShouldPortOverwritePort() throws IOException {
         new Socket("localhost", 4235).close();
         assertThat(natsServer, is(notNullValue()));
-        assertThat(natsServer.getPort(), is(4235));
+        assertThat(natsServer.port(), is(4235));
         natsServer.stop();
     }
 }

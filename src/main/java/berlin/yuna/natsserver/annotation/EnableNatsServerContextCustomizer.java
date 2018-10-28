@@ -51,7 +51,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
 
         NatsServer natsServerBean = new NatsServer(enableNatsServer.natsServerConfig());
         String sourceUrl = environment.getProperty("nats.source.default");
-        natsServerBean.setSource(isEmpty(sourceUrl) ? natsServerBean.getSource() : sourceUrl);
+        natsServerBean.source(isEmpty(sourceUrl) ? natsServerBean.source() : sourceUrl);
         natsServerBean.setNatsServerConfig(mergeConfig(environment, natsServerBean.getNatsServerConfig()));
 
         try {

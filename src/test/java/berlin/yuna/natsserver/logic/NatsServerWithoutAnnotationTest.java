@@ -48,15 +48,15 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_withoutConfig_shouldStartWithDefaultValues() throws Exception {
-        NatsServer natsServer = new NatsServer(4238).setSource(natsSource);
-        assertThat(natsServer.getSource(), is(equalTo(natsSource)));
+        NatsServer natsServer = new NatsServer().port(4238).source(natsSource);
+        assertThat(natsServer.source(), is(equalTo(natsSource)));
         natsServer.start();
         natsServer.stop();
     }
 
     @Test
     public void natsServer_configureConfig_shouldNotOverwriteOldConfig() {
-        NatsServer natsServer = new NatsServer(4240).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4240).source(natsSource);
         natsServer.setNatsServerConfig("user:adminUser", "PAss:adminPw");
 
         assertThat(natsServer.getNatsServerConfig().get(USER), is(equalTo("adminUser")));
@@ -74,7 +74,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_invalidConfig_shouldNotRunIntroException() {
-        NatsServer natsServer = new NatsServer(4240).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4240).source(natsSource);
         natsServer.setNatsServerConfig("user:adminUser:password", " ", "auth:isValid", "");
         assertThat(natsServer.getNatsServerConfig().size(), is(22));
         assertThat(natsServer.getNatsServerConfig().get(AUTH), is(equalTo("isValid")));
@@ -82,7 +82,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_duplicateStart_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
-        NatsServer natsServer = new NatsServer(4231).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4231).source(natsSource);
         natsServer.start();
         natsServer.start();
         natsServer.stop();
@@ -91,14 +91,14 @@ public class NatsServerWithoutAnnotationTest {
     @Test
     public void natsServer_withWrongConfig_shouldNotStartAndThrowException() throws IOException {
         expectedException.expect(IllegalArgumentException.class);
-        NatsServer natsServer = new NatsServer("unknown:config", "port:4232").setSource(natsSource);
+        NatsServer natsServer = new NatsServer("unknown:config", "port:4232").source(natsSource);
         natsServer.start();
     }
 
     @Test
     public void natsServer_asTwoInstances_shouldThrowBindException() {
-        NatsServer natsServer_one = new NatsServer(4233).setSource(natsSource);
-        NatsServer natsServer_two = new NatsServer(4233).setSource(natsSource);
+        NatsServer natsServer_one = new NatsServer(4233).source(natsSource);
+        NatsServer natsServer_two = new NatsServer(4233).source(natsSource);
         Exception exception = null;
         try {
             natsServer_one.start();
@@ -114,27 +114,27 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     public void natsServer_stopWithoutStart_shouldNotRunIntroExceptionOrInterrupt() {
-        NatsServer natsServer = new NatsServer(4241).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4241).source(natsSource);
         natsServer.stop();
     }
 
     @Test
     public void natsServer_withoutPort_shouldThrowMissingFormatArgumentException() {
-        NatsServer natsServer = new NatsServer(4242).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4242).source(natsSource);
         natsServer.stop();
     }
 
     @Test
     public void natsServer_withNullablePortValue_shouldThrowMissingFormatArgumentException() {
         expectedException.expect(MissingFormatArgumentException.class);
-        NatsServer natsServer = new NatsServer(4243).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4243).source(natsSource);
         natsServer.getNatsServerConfig().put(PORT, null);
-        natsServer.getPort();
+        natsServer.port();
     }
 
     @Test
     public void natsServer_withNullableConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
-        NatsServer natsServer = new NatsServer(4236).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4236).source(natsSource);
         natsServer.getNatsServerConfig().put(MAX_AGE, null);
         natsServer.start();
         natsServer.stop();
@@ -143,14 +143,14 @@ public class NatsServerWithoutAnnotationTest {
     @Test
     public void natsServer_withInvalidConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
         expectedException.expect(PortUnreachableException.class);
-        NatsServer natsServer = new NatsServer(MAX_AGE + ":invalidValue", PORT + ":4237").setSource(natsSource);
+        NatsServer natsServer = new NatsServer(MAX_AGE + ":invalidValue", PORT + ":4237").source(natsSource);
         natsServer.start();
         natsServer.stop();
     }
 
     @Test
     public void natsServerOnWindows_shouldAddExeToPath() {
-        NatsServer natsServer = new NatsServer(4244).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4244).source(natsSource);
         String windowsNatsServerPath = natsServer.getNatsServerPath(WINDOWS).toString();
         String expectedExe = NatsServer.BEAN_NAME.toLowerCase() + ".exe";
         assertThat(windowsNatsServerPath, containsString(expectedExe));
@@ -160,9 +160,9 @@ public class NatsServerWithoutAnnotationTest {
     public void natsServerWithoutSourceUrl_shouldThrowException() throws IOException {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("MalformedURLException");
-        NatsServer natsServer = new NatsServer(4239).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(4239).source(natsSource);
         natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
-        natsServer.setSource(null);
+        natsServer.source(null);
         natsServer.start();
     }
 }

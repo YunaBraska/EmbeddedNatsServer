@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 @RunWith(SpringRunner.class)
-public class ConfigMetadata {
+public class ConfigMetadataIntegrationTest {
 
     @Test
     public void generate() throws IOException {

@@ -29,7 +29,6 @@ import java.util.zip.ZipFile;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static berlin.yuna.system.logic.SystemUtil.getOsType;
-import static berlin.yuna.system.logic.SystemUtil.killProcessByName;
 import static java.nio.channels.Channels.newChannel;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
@@ -144,12 +143,12 @@ public class NatsServer implements DisposableBean {
         }
 
         if (!waitForPort(true)) {
-            throw new BindException("Address already in use [" + getPort() + "]");
+            throw new BindException("Address already in use [" + port() + "]");
         }
 
         Path natsServerPath = getNatsServerPath(OPERATING_SYSTEM);
         SystemUtil.setFilePermissions(natsServerPath, OWNER_EXECUTE, OTHERS_EXECUTE, OWNER_READ, OTHERS_READ, OWNER_WRITE, OTHERS_WRITE);
-        LOG.info("Starting [{}] port [{}] version [{}]", BEAN_NAME, getPort(), OPERATING_SYSTEM);
+        LOG.info("Starting [{}] port [{}] version [{}]", BEAN_NAME, port(), OPERATING_SYSTEM);
 
         String command = prepareCommand(natsServerPath);
 
@@ -160,7 +159,7 @@ public class NatsServer implements DisposableBean {
         if (!waitForPort(false)) {
             throw new PortUnreachableException(BEAN_NAME + "failed to start.");
         }
-        LOG.info("Started [{}] port [{}] version [{}]", BEAN_NAME, getPort(), OPERATING_SYSTEM);
+        LOG.info("Started [{}] port [{}] version [{}]", BEAN_NAME, port(), OPERATING_SYSTEM);
         return this;
     }
 
@@ -191,12 +190,23 @@ public class NatsServer implements DisposableBean {
      * @return configured port of the server
      * @throws RuntimeException with {@link ConnectException} when there is no port configured
      */
-    public int getPort() {
+    public int port() {
         String port = natsServerConfig.get(PORT);
         if (port != null) {
             return Integer.valueOf(port);
         }
         throw new MissingFormatArgumentException("Could not initialise port" + BEAN_NAME);
+    }
+
+    /**
+     * Sets the port out of the configuration not from the real PID
+     *
+     * @return {@link NatsServer}
+     * @throws RuntimeException with {@link ConnectException} when there is no port configured
+     */
+    public NatsServer port(int port) {
+        natsServerConfig.put(PORT, String.valueOf(port));
+        return this;
     }
 
     /**
@@ -229,7 +239,7 @@ public class NatsServer implements DisposableBean {
      * @param natsServerUrl url of the source {@link NatsServerSourceConfig}
      * @return {@link NatsServer}
      */
-    public NatsServer setSource(final String natsServerUrl) {
+    public NatsServer source(final String natsServerUrl) {
         this.source = natsServerUrl;
         return this;
     }
@@ -237,7 +247,7 @@ public class NatsServer implements DisposableBean {
     /**
      * Url to find nats server source
      */
-    public String getSource() {
+    public String source() {
         return source;
     }
 
@@ -272,7 +282,7 @@ public class NatsServer implements DisposableBean {
         long timeout = SECONDS.toMillis(10);
 
         while (System.currentTimeMillis() - start < timeout) {
-            if (isPortAvailable(getPort()) == isFree) {
+            if (isPortAvailable(port()) == isFree) {
                 return true;
             }
             Thread.yield();
@@ -323,7 +333,7 @@ public class NatsServer implements DisposableBean {
         return BEAN_NAME + "{" +
                 "NATS_SERVER_VERSION=" + source +
                 ", OPERATING_SYSTEM=" + OPERATING_SYSTEM +
-                ", port=" + getPort() +
+                ", port=" + port() +
                 '}';
     }
 }

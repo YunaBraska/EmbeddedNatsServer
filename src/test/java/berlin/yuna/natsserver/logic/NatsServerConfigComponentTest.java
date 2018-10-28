@@ -33,7 +33,7 @@ public class NatsServerConfigComponentTest {
 
     @Test
     public void compareNatsServerConfig() {
-        Path natsServerPath = new NatsServer(4245).setSource(natsSource).getNatsServerPath(getOsType());
+        Path natsServerPath = new NatsServer(4245).source(natsSource).getNatsServerPath(getOsType());
 
         StringBuilder console = new StringBuilder();
 

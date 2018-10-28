@@ -33,7 +33,7 @@ public class NatsServerComponentTest {
     public void natsServer_shouldDownloadUnzipAndStart() {
         natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
         assertThat(natsServer, is(notNullValue()));
-        assertThat(natsServer.getPort(), is(4222));
+        assertThat(natsServer.port(), is(4222));
         natsServer.stop();
     }
 
@@ -60,7 +60,7 @@ public class NatsServerComponentTest {
     }
 
     private void assertNatsServerStart(final int port, final String... natsServerConfig) {
-        NatsServer natsServer = new NatsServer(natsServerConfig).setSource(natsSource);
+        NatsServer natsServer = new NatsServer(natsServerConfig).source(natsSource);
         try {
             natsServer.start();
             new Socket("localhost", port).close();
