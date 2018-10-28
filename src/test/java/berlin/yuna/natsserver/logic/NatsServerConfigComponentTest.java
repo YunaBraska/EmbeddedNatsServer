@@ -4,6 +4,7 @@ import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.system.logic.Terminal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,9 +28,12 @@ import static org.hamcrest.Matchers.empty;
 @SpringBootTest
 public class NatsServerConfigComponentTest {
 
+    @Value("${nats.source.default}")
+    private String natsSource;
+
     @Test
     public void compareNatsServerConfig() {
-        Path natsServerPath = new NatsServer().getNatsServerPath(getOsType());
+        Path natsServerPath = new NatsServer().setSource(natsSource).getNatsServerPath(getOsType());
 
         StringBuilder console = new StringBuilder();
 

@@ -2,11 +2,10 @@ package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
 import berlin.yuna.system.logic.SystemUtil;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -26,6 +25,9 @@ public class NatsServerComponentTest {
 
     @Autowired
     private NatsServer natsServer;
+
+    @Value("${nats.source.default}")
+    private String natsSource;
 
     @Test
     public void natsServer_shouldDownloadUnzipAndStart() {
@@ -58,7 +60,7 @@ public class NatsServerComponentTest {
     }
 
     private void assertNatsServerStart(final int port, final String... natsServerConfig) {
-        NatsServer natsServer = new NatsServer(natsServerConfig);
+        NatsServer natsServer = new NatsServer(natsServerConfig).setSource(natsSource);
         try {
             natsServer.start();
             new Socket("localhost", port).close();

@@ -24,11 +24,12 @@ public class ConfigMetadata {
         //Fixme: two groups "getGroups().get(0);" at buildJson
         //FIXME: should overwrite old config
 //        ConfigurationMetadata metadata2 = new ConfigurationMetadata("nats.source", NatsServerSourceConfig.class);
-//        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
+        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
+            config.getDescription();
 //            String name = config.name().toLowerCase();
 //            String desc = config.getDescription();
 //            metadata2.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
-//        }
+        }
 //
 //        Path generated = metadata2.generate();
 //        assertThat(generated, is(notNullValue()));

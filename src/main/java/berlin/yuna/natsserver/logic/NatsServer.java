@@ -61,7 +61,7 @@ public class NatsServer implements DisposableBean {
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
     private Process process;
-    private String natsServerSource = NatsServerSourceConfig.LINUX.getDefaultValue();
+    private String source = NatsServerSourceConfig.valueOf(SystemUtil.getOsType().toString().replace("UNKNOWN", "DEFAULT")).getDefaultValue();
     private Map<NatsServerConfig, String> natsServerConfig = getDefaultConfig();
 
     /**
@@ -101,20 +101,23 @@ public class NatsServer implements DisposableBean {
      * Passes the original parameters to the server on startup
      *
      * @param natsServerConfig passes the original parameters to the server.
+     * @return {@link NatsServer}
      * @see NatsServer#setNatsServerConfig(String...)
      * @see NatsServerConfig
      */
-    public void setNatsServerConfig(final Map<NatsServerConfig, String> natsServerConfig) {
+    public NatsServer setNatsServerConfig(final Map<NatsServerConfig, String> natsServerConfig) {
         this.natsServerConfig = natsServerConfig;
+        return this;
     }
 
     /**
      * Passes the original parameters to the server on startup
      *
      * @param natsServerConfigArray example: port:4222, user:admin, password:admin
+     * @return {@link NatsServer}
      * @see NatsServerConfig
      */
-    public void setNatsServerConfig(final String... natsServerConfigArray) {
+    public NatsServer setNatsServerConfig(final String... natsServerConfigArray) {
         for (String property : natsServerConfigArray) {
             String[] pair = property.split(":");
             if (!StringUtils.hasText(property) || pair.length != 2) {
@@ -123,19 +126,21 @@ public class NatsServer implements DisposableBean {
             }
             natsServerConfig.put(NatsServerConfig.valueOf(pair[0].toUpperCase().replace("-", "")), pair[1]);
         }
+        return this;
     }
 
     /**
      * Starts the server in {@link ProcessBuilder} with the given parameterConfig {@link NatsServer#setNatsServerConfig(String...)}
      *
+     * @return {@link NatsServer}
      * @throws IOException              if {@link NatsServer} is not found or unsupported on the {@link OperatingSystem}
      * @throws BindException            if port is already taken
      * @throws PortUnreachableException if {@link NatsServer} is not starting cause port is not free
      */
-    public void start() throws IOException {
+    public NatsServer start() throws IOException {
         if (process != null) {
             LOG.error("[{}] is already running", BEAN_NAME);
-            return;
+            return this;
         }
 
         if (!waitForPort(true)) {
@@ -156,15 +161,17 @@ public class NatsServer implements DisposableBean {
             throw new PortUnreachableException(BEAN_NAME + "failed to start.");
         }
         LOG.info("Started [{}] port [{}] version [{}-{}]", BEAN_NAME, getPort(), OPERATING_SYSTEM);
+        return this;
     }
 
     /**
      * Stops the {@link ProcessBuilder} and kills the {@link NatsServer}
      * Only a log error will occur if the {@link NatsServer} were never started
      *
+     * @return {@link NatsServer}
      * @throws RuntimeException as {@link InterruptedException} if shutdown is interrupted
      */
-    public void stop() {
+    public NatsServer stop() {
         try {
             LOG.info("Stopping [{}]", BEAN_NAME);
             process.destroy();
@@ -175,6 +182,7 @@ public class NatsServer implements DisposableBean {
         } finally {
             LOG.info("Stopped [{}]", BEAN_NAME);
         }
+        return this;
     }
 
     /**
@@ -209,6 +217,7 @@ public class NatsServer implements DisposableBean {
     Path getNatsServerPath(final OperatingSystem operatingSystem) {
         StringBuilder targetPath = new StringBuilder();
         targetPath.append(BEAN_NAME.toLowerCase()).append(File.separator);
+        targetPath.append(operatingSystem).append(File.separator);
         targetPath.append(BEAN_NAME.toLowerCase()).append((operatingSystem == WINDOWS ? ".exe" : ""));
 
         return downloadNats(targetPath);
@@ -217,25 +226,36 @@ public class NatsServer implements DisposableBean {
     /**
      * Url to find nats server source
      *
-     * @param natsServerUrl url of the source {@link berlin.yuna.natsserver.config.NatsServerSourceConfig}
+     * @param natsServerUrl url of the source {@link NatsServerSourceConfig}
+     * @return {@link NatsServer}
      */
-    public void setNatsServerSource(final String natsServerUrl) {
-        this.natsServerSource = natsServerUrl;
+    public NatsServer setSource(final String natsServerUrl) {
+        this.source = natsServerUrl;
+        return this;
+    }
+
+    /**
+     * Url to find nats server source
+     */
+    public String getSource() {
+        return source;
     }
 
     private Path downloadNats(final StringBuilder targetPath) {
-        File tmpFile = new File(TMP_DIR, (new File(targetPath.toString())).getName());
+        File tmpFile = new File(TMP_DIR, targetPath.toString());
         if (!tmpFile.exists()) {
             try {
                 File zipFile = new File(tmpFile.getParent(), tmpFile.getName() + ".zip");
+                LOG.info("Start download natsServer from [{}] to [{}]", source, zipFile);
                 tmpFile.getParentFile().mkdirs();
                 FileOutputStream fos = new FileOutputStream(zipFile);
-                fos.getChannel().transferFrom(newChannel(new URL(natsServerSource).openStream()), 0, Long.MAX_VALUE);
+                fos.getChannel().transferFrom(newChannel(new URL(source).openStream()), 0, Long.MAX_VALUE);
                 return unzip(zipFile, tmpFile);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+        LOG.info("Finished download natsServer unpacked to [{}]", targetPath);
         return tmpFile.toPath();
     }
 
@@ -301,7 +321,7 @@ public class NatsServer implements DisposableBean {
     @Override
     public String toString() {
         return BEAN_NAME + "{" +
-                "NATS_SERVER_VERSION=" + natsServerSource +
+                "NATS_SERVER_VERSION=" + source +
                 ", OPERATING_SYSTEM=" + OPERATING_SYSTEM +
                 ", port=" + getPort() +
                 '}';

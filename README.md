@@ -30,17 +30,22 @@ nats:
     hb_fail_count: 3
 ```
 
+```properties
+nats.server.hb_fail_count=3
+```
+
 * See [NatsServerSourceConfig](https://github.com/YunaBraska/nats-streaming-server-embedded/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsServerSourceConfig.java) class for optional available nats version configuration
 ```yaml
 nats:
   source:
-    windows: "https://nats-windows.zip"
     default: "https://nats-linux.zip"
 ```
-
-```properties
-nats.server.hb_fail_count=3
+```yaml
+nats:
+  source:
+    default: "file://${user.dir}/src/test/resources/natsserver/mac.zip"
 ```
+
 ### TODO
 * No autocompletion for NatsServerSourceConfig - MetaConfigurator need update for multiple groups
 

@@ -6,3 +6,5 @@ logging:
 nats:
   server:
     hb_fail_count: 3
+  source:
+    default: file://${user.dir}/src/test/resources/natsserver/mac.zip
