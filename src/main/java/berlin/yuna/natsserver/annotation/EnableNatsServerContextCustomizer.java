@@ -2,6 +2,7 @@ package berlin.yuna.natsserver.annotation;
 
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.logic.NatsServer;
+import berlin.yuna.system.logic.SystemUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
@@ -51,7 +52,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
 
         NatsServer natsServerBean = new NatsServer(enableNatsServer.natsServerConfig());
         natsServerBean.port(overwritePort(natsServerBean));
-        String sourceUrl = environment.getProperty("nats.source.default");
+        String sourceUrl = overwriteSourceUrl(environment, natsServerBean.source());
         natsServerBean.source(isEmpty(sourceUrl) ? natsServerBean.source() : sourceUrl);
         natsServerBean.setNatsServerConfig(mergeConfig(environment, natsServerBean.getNatsServerConfig()));
 
@@ -65,6 +66,10 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         beanFactory.initializeBean(natsServerBean, NatsServer.BEAN_NAME);
         beanFactory.registerSingleton(NatsServer.BEAN_NAME, natsServerBean);
         ((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(NatsServer.BEAN_NAME, natsServerBean);
+    }
+
+    private String overwriteSourceUrl(final ConfigurableEnvironment environment, final String fallback) {
+        return environment.getProperty("nats.source.default", environment.getProperty("nats.source." + SystemUtil.getOsType().toString().toLowerCase(), fallback));
     }
 
     private int overwritePort(NatsServer natsServerBean) {

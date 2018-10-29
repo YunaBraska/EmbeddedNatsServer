@@ -38,12 +38,11 @@ nats.server.hb_fail_count=3
 ```yaml
 nats:
   source:
-    default: "https://nats-linux.zip"
-```
-```yaml
-nats:
-  source:
-    default: "file://${user.dir}/src/test/resources/natsserver/mac.zip"
+    mac: "https://nats-mac.zip"
+    linux: "https://nats-linux.zip"
+    solaris: "https://nats-solaris.zip"
+    windows: "https://nats-windows.zip"
+    default: "file://${user.dir}/nats-foo-bar.zip"
 ```
 
 ### TODO
