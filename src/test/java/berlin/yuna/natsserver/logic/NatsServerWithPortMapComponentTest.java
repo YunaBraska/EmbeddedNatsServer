@@ -16,17 +16,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@EnableNatsServer(port = 4234)
-public class NatsServerWithPortComponentTest {
+@EnableNatsServer(natsServerConfig = "port:4235")
+public class NatsServerWithPortMapComponentTest {
 
     @Autowired
     private NatsServer natsServer;
 
     @Test
-    public void natsServer_withCustomPort_shouldStartWithCustomPort() throws IOException {
-        new Socket("localhost", 4234).close();
+    public void natsServer_withCustomPortInMap_shouldStartWithCustomPort() throws IOException {
+        new Socket("localhost", 4235).close();
         assertThat(natsServer, is(notNullValue()));
-        assertThat(natsServer.port(), is(4234));
+        assertThat(natsServer.port(), is(4235));
         natsServer.stop();
     }
 }

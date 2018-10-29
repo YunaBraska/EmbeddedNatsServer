@@ -50,6 +50,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         }
 
         NatsServer natsServerBean = new NatsServer(enableNatsServer.natsServerConfig());
+        natsServerBean.port(overwritePort(natsServerBean));
         String sourceUrl = environment.getProperty("nats.source.default");
         natsServerBean.source(isEmpty(sourceUrl) ? natsServerBean.source() : sourceUrl);
         natsServerBean.setNatsServerConfig(mergeConfig(environment, natsServerBean.getNatsServerConfig()));
@@ -64,6 +65,10 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         beanFactory.initializeBean(natsServerBean, NatsServer.BEAN_NAME);
         beanFactory.registerSingleton(NatsServer.BEAN_NAME, natsServerBean);
         ((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(NatsServer.BEAN_NAME, natsServerBean);
+    }
+
+    private int overwritePort(NatsServer natsServerBean) {
+        return enableNatsServer.port() != (Integer) NatsServerConfig.PORT.getDefaultValue() ? enableNatsServer.port() : natsServerBean.port();
     }
 
     private Map<NatsServerConfig, String> mergeConfig(final ConfigurableEnvironment environment, final Map<NatsServerConfig, String> originalConfig) {

@@ -29,6 +29,7 @@ import java.util.zip.ZipFile;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static berlin.yuna.system.logic.SystemUtil.getOsType;
+import static berlin.yuna.system.logic.SystemUtil.killProcessByName;
 import static java.nio.channels.Channels.newChannel;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
@@ -173,9 +174,10 @@ public class NatsServer implements DisposableBean {
     public NatsServer stop() {
         try {
             LOG.info("Stopping [{}]", BEAN_NAME);
+//            Runtime.getRuntime().addShutdownHook(new Thread(() -> process.destroy()));
+//            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
             process.destroy();
             process.waitFor();
-//            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
         } catch (NullPointerException | InterruptedException e) {
             LOG.warn("Could not stop [{}] cause cant find process", BEAN_NAME);
         } finally {
