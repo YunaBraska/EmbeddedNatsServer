@@ -2,6 +2,7 @@ package berlin.yuna.natsserver.util;
 
 
 import berlin.yuna.configmetadata.model.ConfigurationMetadata;
+import berlin.yuna.configmetadata.model.Groups;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import org.junit.Test;
@@ -21,28 +22,21 @@ public class ConfigMetadataIntegrationTest {
 
     @Test
     public void generate() throws IOException {
-        //Fixme: two groups "getGroups().get(0);" at buildJson
-        //FIXME: should overwrite old config
-//        ConfigurationMetadata metadata2 = new ConfigurationMetadata("nats.source", NatsServerSourceConfig.class);
-        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
-            config.getDescription();
-//            String name = config.name().toLowerCase();
-//            String desc = config.getDescription();
-//            metadata2.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
-        }
-//
-//        Path generated = metadata2.generate();
-//        assertThat(generated, is(notNullValue()));
-
-
-        ConfigurationMetadata metadata1 = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
+        ConfigurationMetadata metadata = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
         for (NatsServerConfig config : NatsServerConfig.values()) {
             String name = config.name().toLowerCase();
             String desc = config.getDescription();
-            metadata1.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
+            metadata.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
         }
 
-        Path generated = metadata1.generate();
+        Groups groups = metadata.newGroups("nats.source", NatsServerSourceConfig.class);
+        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
+            String name = config.name().toLowerCase();
+            String desc = config.getDescription();
+            metadata.newProperties().name(groups, name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
+        }
+
+        Path generated = metadata.generate();
         assertThat(generated, is(notNullValue()));
     }
 
