@@ -1,9 +1,11 @@
 language: java
+jdk:
+  - openjdk12
 sudo: false
-script: mvn clean verify -Dnats.source.default='file://${user.dir}/src/test/resources/natsserver/linux.zip'
+script: sh scripts/test.sh
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t f5e9a171-6ca3-494a-b393-4162e319f20a
+  - bash <(curl -s https://codecov.io/bash) -t 95613817-25e8-4c02-89ca-ab6f67c62312
 env:
   global:
-    - CODECOV_TOKEN=:f5e9a171-6ca3-494a-b393-4162e319f20a
+    - CODECOV_TOKEN=:95613817-25e8-4c02-89ca-ab6f67c62312

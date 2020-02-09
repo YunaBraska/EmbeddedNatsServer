@@ -46,7 +46,7 @@
         <dependency>
             <groupId>berlin.yuna</groupId>
             <artifactId>command-line-util</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.3</version>
         </dependency>
 
         <!-- TEST -->
@@ -82,6 +82,19 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>berlin.yuna</groupId>
+                <artifactId>deployment-maven-plugin</artifactId>
+                <version>12.0.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.3</version>
@@ -113,26 +126,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.ning.maven.plugins</groupId>-->
-<!--                <artifactId>maven-duplicate-finder-plugin</artifactId>-->
-<!--                <version>1.0.9</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>-->
-<!--                            <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>-->
-<!--                            <ignoredResources>-->
-<!--                                <ignoredResource>.*</ignoredResource>-->
-<!--                            </ignoredResources>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
