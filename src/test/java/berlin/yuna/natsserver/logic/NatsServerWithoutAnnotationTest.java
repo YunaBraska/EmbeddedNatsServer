@@ -1,7 +1,7 @@
 package berlin.yuna.natsserver.logic;
 
+import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.system.logic.SystemUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingFormatArgumentException;
 
+import static berlin.yuna.clu.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static berlin.yuna.natsserver.config.NatsServerConfig.AUTH;
 import static berlin.yuna.natsserver.config.NatsServerConfig.MAX_AGE;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PASS;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static berlin.yuna.natsserver.config.NatsServerConfig.USER;
-import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

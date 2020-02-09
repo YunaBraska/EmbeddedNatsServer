@@ -1,7 +1,7 @@
 package berlin.yuna.natsserver.logic;
 
+import berlin.yuna.clu.logic.Terminal;
 import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.system.logic.Terminal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static berlin.yuna.system.logic.SystemUtil.getOsType;
+import static berlin.yuna.clu.logic.SystemUtil.getOsType;
 import static java.util.Arrays.stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

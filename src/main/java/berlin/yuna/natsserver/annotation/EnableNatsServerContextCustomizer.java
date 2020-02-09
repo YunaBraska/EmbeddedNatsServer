@@ -1,8 +1,8 @@
 package berlin.yuna.natsserver.annotation;
 
+import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.logic.NatsServer;
-import berlin.yuna.system.logic.SystemUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;

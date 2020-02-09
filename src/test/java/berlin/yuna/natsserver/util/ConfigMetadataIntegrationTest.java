@@ -16,8 +16,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
-@RunWith(SpringRunner.class)
 public class ConfigMetadataIntegrationTest {
 
     @Test

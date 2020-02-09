@@ -1,7 +1,7 @@
 package berlin.yuna.natsserver.logic;
 
+import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
-import berlin.yuna.system.logic.SystemUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.net.Socket;
 
-import static berlin.yuna.system.logic.SystemUtil.getOsType;
+import static berlin.yuna.clu.logic.SystemUtil.getOsType;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -31,7 +31,7 @@ public class NatsServerComponentTest {
 
     @Test
     public void natsServer_shouldDownloadUnzipAndStart() {
-        natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
+        natsServer.getNatsServerPath(getOsType()).toFile().delete();
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.port(), is(4222));
         natsServer.stop();

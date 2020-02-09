@@ -1,10 +1,9 @@
 package berlin.yuna.natsserver.logic;
 
+import berlin.yuna.clu.logic.SystemUtil;
+import berlin.yuna.clu.logic.Terminal;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
-import berlin.yuna.system.logic.SystemUtil;
-import berlin.yuna.system.logic.SystemUtil.OperatingSystem;
-import berlin.yuna.system.logic.Terminal;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
@@ -19,6 +18,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,10 +26,10 @@ import java.util.MissingFormatArgumentException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import static berlin.yuna.clu.logic.SystemUtil.OperatingSystem.WINDOWS;
+import static berlin.yuna.clu.logic.SystemUtil.getOsType;
+import static berlin.yuna.clu.logic.SystemUtil.killProcessByName;
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
-import static berlin.yuna.system.logic.SystemUtil.OperatingSystem.WINDOWS;
-import static berlin.yuna.system.logic.SystemUtil.getOsType;
-import static berlin.yuna.system.logic.SystemUtil.killProcessByName;
 import static java.nio.channels.Channels.newChannel;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
@@ -46,7 +46,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  * {@link NatsServer}
  *
  * @author Yuna Morgenstern
- * @see OperatingSystem
+ * @see SystemUtil.OperatingSystem
  * @see NatsServer
  * @since 1.0
  */
@@ -57,11 +57,11 @@ public class NatsServer implements DisposableBean {
      */
     private static final Logger LOG = getLogger(NatsServer.class);
     public static final String BEAN_NAME = NatsServer.class.getSimpleName();
-    private static final OperatingSystem OPERATING_SYSTEM = getOsType();
+    private static final SystemUtil.OperatingSystem OPERATING_SYSTEM = getOsType();
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
     private Process process;
-    private String source = NatsServerSourceConfig.valueOf(SystemUtil.getOsType().toString().replace("UNKNOWN", "DEFAULT")).getDefaultValue();
+    private String source = NatsServerSourceConfig.valueOf(getOsType().toString().replace("UNKNOWN", "DEFAULT")).getDefaultValue();
     private Map<NatsServerConfig, String> natsServerConfig = getDefaultConfig();
 
     /**
@@ -133,7 +133,7 @@ public class NatsServer implements DisposableBean {
      * Starts the server in {@link ProcessBuilder} with the given parameterConfig {@link NatsServer#setNatsServerConfig(String...)}
      *
      * @return {@link NatsServer}
-     * @throws IOException              if {@link NatsServer} is not found or unsupported on the {@link OperatingSystem}
+     * @throws IOException              if {@link NatsServer} is not found or unsupported on the {@link SystemUtil.OperatingSystem}
      * @throws BindException            if port is already taken
      * @throws PortUnreachableException if {@link NatsServer} is not starting cause port is not free
      */
@@ -155,7 +155,13 @@ public class NatsServer implements DisposableBean {
 
         LOG.debug(command);
 
-        process = new Terminal().timeoutMs(10000).breakOnError(false).execute(command).process();
+        process = new Terminal()
+                .consumerInfo(System.out::println)
+                .consumerError(System.err::println)
+                .timeoutMs(10000)
+                .breakOnError(false)
+                .execute(command)
+                .process();
 
         if (!waitForPort(false)) {
             throw new PortUnreachableException(BEAN_NAME + "failed to start.");
@@ -178,6 +184,7 @@ public class NatsServer implements DisposableBean {
 //            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
             process.destroy();
             process.waitFor();
+            killProcessByName("natsserver");
         } catch (NullPointerException | InterruptedException e) {
             LOG.warn("Could not stop [{}] cause cant find process", BEAN_NAME);
         } finally {
@@ -226,13 +233,13 @@ public class NatsServer implements DisposableBean {
      *
      * @return Resource/{SIMPLE_CLASS_NAME}/{NATS_SERVER_VERSION}/{OPERATING_SYSTEM}/{SIMPLE_CLASS_NAME}
      */
-    Path getNatsServerPath(final OperatingSystem operatingSystem) {
+    Path getNatsServerPath(final SystemUtil.OperatingSystem operatingSystem) {
         StringBuilder targetPath = new StringBuilder();
         targetPath.append(BEAN_NAME.toLowerCase()).append(File.separator);
         targetPath.append(operatingSystem).append(File.separator);
         targetPath.append(BEAN_NAME.toLowerCase()).append((operatingSystem == WINDOWS ? ".exe" : ""));
 
-        return downloadNats(targetPath);
+        return downloadNats(targetPath.toString());
     }
 
     /**
@@ -253,29 +260,30 @@ public class NatsServer implements DisposableBean {
         return source;
     }
 
-    private Path downloadNats(final StringBuilder targetPath) {
-        File tmpFile = new File(TMP_DIR, targetPath.toString());
-        if (!tmpFile.exists()) {
+    private Path downloadNats(final String targetPath) {
+        Path tmpPath = Paths.get(TMP_DIR, targetPath);
+        if (Files.notExists(tmpPath)) {
             try {
-                File zipFile = new File(tmpFile.getParent(), tmpFile.getName() + ".zip");
+                File zipFile = new File(tmpPath.getParent().toFile(), tmpPath.getFileName().toString() + ".zip");
                 LOG.info("Start download natsServer from [{}] to [{}]", source, zipFile);
-                tmpFile.getParentFile().mkdirs();
+                Files.createDirectories(tmpPath.getParent());
                 FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.getChannel().transferFrom(newChannel(new URL(source).openStream()), 0, Long.MAX_VALUE);
-                return unzip(zipFile, tmpFile);
+                return unzip(zipFile, tmpPath.toFile());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        LOG.info("Finished download natsServer unpacked to [{}]", targetPath);
-        return tmpFile.toPath();
+        LOG.info("Finished download natsServer unpacked to [{}]", tmpPath.toUri());
+        return tmpPath;
     }
 
     private Path unzip(final File source, final File target) throws IOException {
         final ZipFile zipFile = new ZipFile(source);
-        ZipEntry max = zipFile.stream().max(comparingLong(ZipEntry::getSize)).get();
+        ZipEntry max = zipFile.stream().max(comparingLong(ZipEntry::getSize))
+                .orElseThrow(() -> new IllegalStateException("File not found " + zipFile));
         Files.copy(zipFile.getInputStream(max), target.toPath());
-        source.delete();
+        Files.delete(source.toPath());
         return target.toPath();
     }
 
