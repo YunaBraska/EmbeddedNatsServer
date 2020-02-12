@@ -39,7 +39,6 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
      * @param mergedConfig {@link MergedContextConfiguration} is not in use
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void customizeContext(ConfigurableApplicationContext context, MergedContextConfiguration mergedConfig) {
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
         Assert.isInstanceOf(DefaultSingletonBeanRegistry.class, beanFactory);

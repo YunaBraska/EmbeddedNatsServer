@@ -184,9 +184,9 @@ public class NatsServer implements DisposableBean {
 //            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
             process.destroy();
             process.waitFor();
-            killProcessByName("natsserver");
         } catch (NullPointerException | InterruptedException e) {
             LOG.warn("Could not stop [{}] cause cant find process", BEAN_NAME);
+            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
         } finally {
             LOG.info("Stopped [{}]", BEAN_NAME);
         }
@@ -202,7 +202,7 @@ public class NatsServer implements DisposableBean {
     public int port() {
         String port = natsServerConfig.get(PORT);
         if (port != null) {
-            return Integer.valueOf(port);
+            return Integer.parseInt(port);
         }
         throw new MissingFormatArgumentException("Could not initialise port" + BEAN_NAME);
     }

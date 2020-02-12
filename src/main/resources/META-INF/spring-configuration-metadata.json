@@ -98,6 +98,21 @@
     "description" : "[SIGNAL] Send signal to nats-streaming-server process (stop, quit, reopen)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
+    "name" : "nats.server.encrypt",
+    "type" : "java.lang.Boolean",
+    "description" : "Specify if server should use encryption at rest",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
+    "name" : "nats.server.encryption_cipher",
+    "type" : "java.lang.String",
+    "description" : "Cipher to use for encryption. Currently support AES and CHAHA (ChaChaPoly). Defaults to AES",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
+    "name" : "nats.server.encryption_key",
+    "type" : "java.lang.String",
+    "description" : "Encryption Key. It is recommended to specify it through the NATS_STREAMING_ENCRYPTION_KEY environment variable instead",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
     "name" : "nats.server.clustered",
     "type" : "java.lang.Boolean",
     "description" : "Run the server in a clustered configuration (default: false)",
@@ -108,7 +123,7 @@
     "type" : "java.lang.String",
     "description" : "ID of the node within the cluster if there is no stored ID (default: random UUID)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig",
-    "defaultValue" : "182bc895-d4be-4a04-a04e-9f48252584ce"
+    "defaultValue" : "827f2882-2d24-43d0-848f-630a474fbc0f"
   }, {
     "name" : "nats.server.cluster_bootstrap",
     "type" : "java.lang.Boolean",
@@ -226,6 +241,16 @@
     "name" : "nats.server.file_truncate_bad_eof",
     "type" : "java.lang.Boolean",
     "description" : "Truncate files for which there is an unexpected EOF on recovery, dataloss may occur",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
+    "name" : "nats.server.file_read_buffer_size",
+    "type" : "java.lang.Long",
+    "description" : "Size of messages read ahead buffer (0 to disable)",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
+    "name" : "nats.server.file_auto_sync",
+    "type" : "java.lang.String",
+    "description" : "Interval at which the store should be automatically flushed and sync'ed on disk (<= 0 to disable)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
     "name" : "nats.server.sql_driver",

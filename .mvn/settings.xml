@@ -8,7 +8,7 @@
             </activation>
             <properties>
                 <gpg.executable>gpg</gpg.executable>
-                <gpg.passphrase>${GPG_PASS}</gpg.passphrase>
+                <gpg.passphrase>${GPG_SECRET}</gpg.passphrase>
             </properties>
         </profile>
     </profiles>

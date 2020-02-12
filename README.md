@@ -1,41 +1,43 @@
 # nats-streaming-server-embedded
-
-![Build][Build-shield] 
-[![Maintainable][Maintainable-image]][Maintainable-Url]
-[![Coverage][Coverage-image]][Coverage-Url]
-![Central][Central-shield] 
-![Tag][Tag-shield]
-![Issues][Issues-shield] 
-![Commit][Commit-shield] 
-![Size][Size-shield] 
-![Dependency][Dependency-shield]
-![License][License-shield]
-![Label][Label-shield]
-
-[License-Url]: https://www.apache.org/licenses/LICENSE-2.0
-[Build-Status-Url]: https://travis-ci.org/YunaBraska/nats-streaming-server-embedded
-[Build-Status-Image]: https://travis-ci.org/YunaBraska/nats-streaming-server-embedded.svg?branch=master
-[Coverage-Url]: https://codecov.io/gh/YunaBraska/nats-streaming-server-embedded?branch=master
-[Coverage-image]: https://img.shields.io/codecov/c/github/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Maintainable-Url]: https://codeclimate.com/github/YunaBraska/nats-streaming-server-embedded/maintainability
-[Maintainable-image]: https://img.shields.io/codeclimate/maintainability/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Javadoc-url]: http://javadoc.io/doc/berlin.yuna/nats-streaming-server-embedded
-[Javadoc-image]: http://javadoc.io/badge/berlin.yuna/nats-streaming-server-embedded.svg
-[Gitter-Url]: https://gitter.im/nats-streaming-server-embedded/Lobby
-[Gitter-image]: https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg
-
-[Dependency-shield]: https://img.shields.io/librariesio/github/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Tag-shield]: https://img.shields.io/github/v/tag/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Central-shield]: https://img.shields.io/maven-central/v/berlin.yuna/nats-streaming-server-embedded?style=flat-square
-[Size-shield]: https://img.shields.io/github/repo-size/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Issues-shield]: https://img.shields.io/github/issues/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[License-shield]: https://img.shields.io/github/license/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Commit-shield]: https://img.shields.io/github/last-commit/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[Label-shield]: https://img.shields.io/badge/Yuna-QueenInside-blueviolet?style=flat-square
-[Build-shield]: https://img.shields.io/travis/YunaBraska/nats-streaming-server-embedded/master?style=flat-square
-
-### Description
 Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-server) for testing which contains the original [Nats streaming server](https://github.com/nats-io/nats-streaming-server) 
+
+[![Build][build_shield]][build_link]
+[![Maintainable][maintainable_shield]][maintainable_link]
+[![Coverage][coverage_shield]][coverage_link]
+[![Issues][issues_shield]][issues_link]
+[![Commit][commit_shield]][commit_link]
+[![Dependencies][dependency_shield]][dependency_link]
+[![License][license_shield]][license_link]
+[![Central][central_shield]][central_link]
+[![Tag][tag_shield]][tag_link]
+[![Javadoc][javadoc_shield]][javadoc_link]
+[![Size][size_shield]][size_shield]
+![Label][label_shield]
+
+[build_shield]: https://img.shields.io/travis/YunaBraska/nats-streaming-server-embedded/master?style=flat-square
+[build_link]: https://travis-ci.org/YunaBraska/nats-streaming-server-embedded
+[maintainable_shield]: https://img.shields.io/codeclimate/maintainability/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[maintainable_link]: https://codeclimate.com/github/YunaBraska/nats-streaming-server-embedded/maintainability
+[coverage_shield]: https://img.shields.io/codecov/c/github/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[coverage_link]: https://codecov.io/gh/YunaBraska/nats-streaming-server-embedded?branch=master
+[issues_shield]: https://img.shields.io/github/issues/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[issues_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/commits/master
+[commit_shield]: https://img.shields.io/github/last-commit/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[commit_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/issues
+[license_shield]: https://img.shields.io/github/license/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[license_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/blob/master/LICENSE
+[dependency_shield]: https://img.shields.io/librariesio/github/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[dependency_link]: https://libraries.io/github/YunaBraska/nats-streaming-server-embedded
+[central_shield]: https://img.shields.io/maven-central/v/berlin.yuna/nats-streaming-server-embedded?style=flat-square
+[central_link]:https://search.maven.org/artifact/berlin.yuna/nats-streaming-server-embedded
+[tag_shield]: https://img.shields.io/github/v/tag/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[tag_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/releases
+[javadoc_shield]: https://javadoc.io/badge2/berlin.yuna/nats-streaming-server-embedded/javadoc.svg?style=flat-square
+[javadoc_link]: https://javadoc.io/doc/berlin.yuna/nats-streaming-server-embedded
+[size_shield]: https://img.shields.io/github/repo-size/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[label_shield]: https://img.shields.io/badge/Yuna-QueenInside-blueviolet?style=flat-square
+[gitter_shield]: https://img.shields.io/gitter/room/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[gitter_link]: https://gitter.im/nats-streaming-server-embedded/Lobby
 
 ### Usage
 * One annotation to setup the powerful [Nats streaming server](https://github.com/nats-io/nats-streaming-server)

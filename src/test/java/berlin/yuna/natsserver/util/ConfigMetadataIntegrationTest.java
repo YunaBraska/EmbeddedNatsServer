@@ -6,8 +6,6 @@ import berlin.yuna.configmetadata.model.Groups;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.nio.file.Path;

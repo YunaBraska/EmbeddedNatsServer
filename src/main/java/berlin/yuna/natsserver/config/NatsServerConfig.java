@@ -21,6 +21,9 @@ public enum NatsServerConfig {
     HB_FAIL_COUNT(null, "[INT] Number of failed heartbeats before server closes the client connection"),
     FT_GROUP(null, "[STRING] Name of the FT Group. A group can be 2 or more servers with a single active server and all sharing the same datastore."),
     SIGNAL(null, "[STRING] [SIGNAL] Send signal to nats-streaming-server process (stop, quit, reopen)"),
+    ENCRYPT(null, "[BOOL] Specify if server should use encryption at rest"),
+    ENCRYPTION_CIPHER(null, "[STRING] Cipher to use for encryption. Currently support AES and CHAHA (ChaChaPoly). Defaults to AES"),
+    ENCRYPTION_KEY(null, "[STRING] Encryption Key. It is recommended to specify it through the NATS_STREAMING_ENCRYPTION_KEY environment variable instead"),
 
     //Streaming Server Clustering Options
     CLUSTERED("false", "[BOOL] Run the server in a clustered configuration (default: false)"),
@@ -50,6 +53,8 @@ public enum NatsServerConfig {
     FILE_FDS_LIMIT(null, "[INT] Store will try to use no more file descriptors than this given limit"),
     FILE_PARALLEL_RECOVERY(null, "[INT] On startup, number of channels that can be recovered in parallel"),
     FILE_TRUNCATE_BAD_EOF(null, "[BOOL] Truncate files for which there is an unexpected EOF on recovery, dataloss may occur"),
+    FILE_READ_BUFFER_SIZE(null, "[SIZE] Size of messages read ahead buffer (0 to disable)"),
+    FILE_AUTO_SYNC(null, "[DURATION] Interval at which the store should be automatically flushed and sync'ed on disk (<= 0 to disable)"),
 
     //Streaming Server SQL Store Options
     SQL_DRIVER(null, "[STRING] Name of the SQL Driver (\"mysql\" or \"postgres\")"),

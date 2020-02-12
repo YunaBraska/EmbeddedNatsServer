@@ -7,7 +7,7 @@ import org.springframework.test.context.ContextCustomizerFactory;
 
 import java.util.List;
 
-public class EnableNatsServerContextCustomizerFactory implements ContextCustomizerFactory {
+class EnableNatsServerContextCustomizerFactory implements ContextCustomizerFactory {
 
     /**
      * @param testClass        current test class with {@link EnableNatsServer} annotation
