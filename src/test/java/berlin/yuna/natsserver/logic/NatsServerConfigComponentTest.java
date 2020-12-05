@@ -3,6 +3,7 @@ package berlin.yuna.natsserver.logic;
 import berlin.yuna.clu.logic.Terminal;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 @DisplayName("NatsServer ConfigTest")
 public class NatsServerConfigComponentTest {
 

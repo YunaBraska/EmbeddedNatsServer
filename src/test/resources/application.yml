@@ -1,10 +1,10 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILE:dev}
+  main:
+    banner-mode: off
 logging:
   level:
+    ROOT: ERROR
     org.springframework: ERROR
     logging.level.yuna.berlin: INFO
-
-nats:
-  server:
-    hb_fail_count: 3
-  source:
-    default: ${NATS_SOURCE:file://${user.dir}/src/test/resources/natsserver/mac.zip}

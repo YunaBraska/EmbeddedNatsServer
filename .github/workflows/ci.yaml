@@ -1,0 +1,25 @@
+name: Java CI with Maven && Graphviz
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  SPRING_PROFILE: ci
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup requirements
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+      - name: Setup maven cache
+        run: ./mvnw -B clean verify -Dmaven.test.skip=true
+      - name: Run tests
+        run: ./mvnw -B clean verify

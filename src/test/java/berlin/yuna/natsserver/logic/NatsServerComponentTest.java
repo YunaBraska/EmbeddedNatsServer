@@ -2,6 +2,7 @@ package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @EnableNatsServer
+@Tag("IntegrationTest")
 @DisplayName("NatsServerTest")
 public class NatsServerComponentTest {
 

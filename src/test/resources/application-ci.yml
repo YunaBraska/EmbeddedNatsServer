@@ -1,8 +1,8 @@
 logging:
   level:
+    ROOT: ERROR
     org.springframework: ERROR
-    logging.level.yuna.berlin: INFO
-
+    logging.level.yuna.berlin: ERROR
 nats:
   server:
     hb_fail_count: 3

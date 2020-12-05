@@ -2,6 +2,7 @@ package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 @EnableNatsServer(port = 4247, natsServerConfig = "port:4246")
 @DisplayName("NatsServer overwrite AutoConfig port test")
 public class NatsServerOverwritePortComponentTest {

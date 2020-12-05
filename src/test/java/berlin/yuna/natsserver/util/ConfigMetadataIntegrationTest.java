@@ -6,6 +6,7 @@ import berlin.yuna.configmetadata.model.Groups;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@Tag("UnitTest")
 public class ConfigMetadataIntegrationTest {
 
     @Test

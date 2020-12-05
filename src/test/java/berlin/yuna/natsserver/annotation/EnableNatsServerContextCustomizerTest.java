@@ -2,6 +2,7 @@ package berlin.yuna.natsserver.annotation;
 
 import berlin.yuna.natsserver.logic.NatsServer;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 @DisplayName("ContextCustomizerTest")
 public class EnableNatsServerContextCustomizerTest {
 
