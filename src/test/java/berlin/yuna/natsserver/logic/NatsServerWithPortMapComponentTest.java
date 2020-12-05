@@ -1,11 +1,10 @@
 package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,15 +13,16 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableNatsServer(natsServerConfig = "port:4235")
+@DisplayName("NatsServer AutoConfig port from map test")
 public class NatsServerWithPortMapComponentTest {
 
     @Autowired
     private NatsServer natsServer;
 
     @Test
+    @DisplayName("Overwrite port on config map")
     public void natsServer_withCustomPortInMap_shouldStartWithCustomPort() throws IOException {
         new Socket("localhost", 4235).close();
         assertThat(natsServer, is(notNullValue()));

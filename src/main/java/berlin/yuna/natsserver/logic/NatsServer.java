@@ -164,7 +164,7 @@ public class NatsServer implements DisposableBean {
                 .process();
 
         if (!waitForPort(false)) {
-            throw new PortUnreachableException(BEAN_NAME + "failed to start.");
+            throw new PortUnreachableException(BEAN_NAME + " failed to start.");
         }
         LOG.info("Started [{}] port [{}] version [{}]", BEAN_NAME, port(), OPERATING_SYSTEM);
         return this;
@@ -204,7 +204,7 @@ public class NatsServer implements DisposableBean {
         if (port != null) {
             return Integer.parseInt(port);
         }
-        throw new MissingFormatArgumentException("Could not initialise port" + BEAN_NAME);
+        throw new MissingFormatArgumentException("Could not initialise port " + BEAN_NAME);
     }
 
     /**

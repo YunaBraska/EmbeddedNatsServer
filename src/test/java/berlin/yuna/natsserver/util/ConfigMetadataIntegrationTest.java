@@ -5,7 +5,8 @@ import berlin.yuna.configmetadata.model.ConfigurationMetadata;
 import berlin.yuna.configmetadata.model.Groups;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ConfigMetadataIntegrationTest {
 
     @Test
+    @DisplayName("Generate spring boot autocompletion")
     public void generate() throws IOException {
         ConfigurationMetadata metadata = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
         for (NatsServerConfig config : NatsServerConfig.values()) {

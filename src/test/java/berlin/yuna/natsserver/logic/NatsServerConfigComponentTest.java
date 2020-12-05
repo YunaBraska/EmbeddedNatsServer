@@ -2,11 +2,10 @@ package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.clu.logic.Terminal;
 import berlin.yuna.natsserver.config.NatsServerConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,14 +23,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@DisplayName("NatsServer ConfigTest")
 public class NatsServerConfigComponentTest {
 
     @Value("${nats.source.default}")
     private String natsSource;
 
     @Test
+    @DisplayName("Compare nats with java config")
     public void compareNatsServerConfig() {
         Path natsServerPath = new NatsServer(4245).source(natsSource).getNatsServerPath(getOsType());
 
@@ -51,11 +51,13 @@ public class NatsServerConfigComponentTest {
     }
 
     @Test
-    public void getKey_WithOneMinus_ShouldBeSuccessful() {
+    @DisplayName("Compare config key with one dash")
+    public void getKey_WithOneDash_ShouldBeSuccessful() {
         assertThat(NatsServerConfig.SECURE.getKey(), is(equalTo("-secure ")));
     }
 
     @Test
+    @DisplayName("Compare config key with equal sign")
     public void getKey_WithBoolean_ShouldAddOneEqualSign() {
         assertThat(NatsServerConfig.CLUSTERED.getKey(), is(equalTo("--clustered=")));
     }

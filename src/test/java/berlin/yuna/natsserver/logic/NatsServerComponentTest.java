@@ -1,12 +1,12 @@
 package berlin.yuna.natsserver.logic;
 
 import berlin.yuna.natsserver.annotation.EnableNatsServer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,10 +17,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableNatsServer
+@DisplayName("NatsServerTest")
 public class NatsServerComponentTest {
 
     @Autowired
@@ -30,6 +31,7 @@ public class NatsServerComponentTest {
     private String natsSource;
 
     @Test
+    @DisplayName("Download and start server")
     public void natsServer_shouldDownloadUnzipAndStart() throws IOException {
         Files.deleteIfExists(natsServer.getNatsServerPath(getOsType()));
         assertThat(natsServer, is(notNullValue()));
@@ -38,21 +40,29 @@ public class NatsServerComponentTest {
     }
 
     @Test
-    public void secondNatsServer_withDoublePointSeparatedProperty_shouldStartSuccessful() {
+    @DisplayName("Port config with double dash")
+    public void secondNatsServer_withDoubleDotSeparatedProperty_shouldStartSuccessful() {
         assertNatsServerStart(4225, "--port:4225");
     }
 
     @Test
+    @DisplayName("Port config without dashes")
     public void secondNatsServer_withOutMinusProperty_shouldStartSuccessful() {
         assertNatsServerStart(4226, "port:4226");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
+    @DisplayName("Invalid config [FAIL]")
     public void secondNatsServer_withInvalidProperty_shouldFailToStart() {
-        assertNatsServerStart(4228, "p:4228");
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> assertNatsServerStart(4228, "p:4228"),
+                "No enum constant"
+        );
     }
 
     @Test
+    @DisplayName("ToString")
     public void toString_shouldPrintPortAndOs() {
         String runningNatsServer = natsServer.toString();
         assertThat(runningNatsServer, containsString(getOsType().toString()));
