@@ -35,7 +35,7 @@ public class NatsServerConfigComponentTest {
     @Test
     @DisplayName("Compare nats with java config")
     public void compareNatsServerConfig() {
-        Path natsServerPath = new NatsServer(4245).source(natsSource).getNatsServerPath(getOsType());
+        Path natsServerPath = new NatsServer(4248).source(natsSource).getNatsServerPath(getOsType());
 
         StringBuilder console = new StringBuilder();
 
