@@ -22,7 +22,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * The typical usage of this annotation is like:
  * <pre class="code">
  * &#064;{@link org.springframework.boot.test.context.SpringBootTest}
- * &#064;{@link org.junit.runner.RunWith}({@link org.springframework.test.context.junit4.SpringRunner}.class)
  * &#064;{@link EnableNatsServer}
  * public class MyNatsTests {
  *

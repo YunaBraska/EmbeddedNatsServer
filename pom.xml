@@ -221,7 +221,6 @@
                                     <quiet>true</quiet>
                                     <!-- disable strict checking -->
                                     <doclint>none</doclint>
-                                    <source>8</source>
                                 </configuration>
                             </execution>
                         </executions>
