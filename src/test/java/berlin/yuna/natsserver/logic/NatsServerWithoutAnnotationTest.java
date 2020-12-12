@@ -32,14 +32,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Tag("IntegrationTest")
 @DisplayName("NatsServer plain java")
-public class NatsServerWithoutAnnotationTest {
+class NatsServerWithoutAnnotationTest {
 
     @Value("${nats.source.default}")
     private String natsSource;
 
     @Test
     @DisplayName("No start without annotation")
-    public void natsServer_withoutAnnotation_shouldNotBeStarted() {
+    void natsServer_withoutAnnotation_shouldNotBeStarted() {
         assertThrows(
                 ConnectException.class,
                 () -> new Socket("localhost", 4245).close(),
@@ -49,7 +49,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Default config")
-    public void natsServer_withoutConfig_shouldStartWithDefaultValues() throws Exception {
+    void natsServer_withoutConfig_shouldStartWithDefaultValues() throws Exception {
         NatsServer natsServer = new NatsServer().port(4238).source(natsSource);
         assertThat(natsServer.source(), is(equalTo(natsSource)));
         natsServer.start();
@@ -58,7 +58,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Setup config")
-    public void natsServer_configureConfig_shouldNotOverwriteOldConfig() {
+    void natsServer_configureConfig_shouldNotOverwriteOldConfig() {
         NatsServer natsServer = new NatsServer(4240).source(natsSource);
         natsServer.setNatsServerConfig("user:adminUser", "PAss:adminPw");
 
@@ -77,7 +77,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Unknown config is ignored")
-    public void natsServer_invalidConfig_shouldNotRunIntroException() {
+    void natsServer_invalidConfig_shouldNotRunIntroException() {
         NatsServer natsServer = new NatsServer(4240).source(natsSource);
         natsServer.setNatsServerConfig("user:adminUser:password", " ", "auth:isValid", "");
         assertThat(natsServer.getNatsServerConfig().size(), is(22));
@@ -86,7 +86,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Duplicate starts will be ignored")
-    public void natsServer_duplicateStart_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
+    void natsServer_duplicateStart_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
         NatsServer natsServer = new NatsServer(4231).source(natsSource);
         natsServer.start();
         natsServer.start();
@@ -95,7 +95,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Unknown config [FAIL]")
-    public void natsServer_withWrongConfig_shouldNotStartAndThrowException() throws IOException {
+    void natsServer_withWrongConfig_shouldNotStartAndThrowException() throws IOException {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new NatsServer("unknown:config", "port:4232").source(natsSource),
@@ -106,7 +106,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Duplicate instances [FAIL]")
-    public void natsServer_asTwoInstances_shouldThrowBindException() {
+    void natsServer_asTwoInstances_shouldThrowBindException() {
         NatsServer natsServer_one = new NatsServer(4233).source(natsSource);
         NatsServer natsServer_two = new NatsServer(4233).source(natsSource);
         Exception exception = null;
@@ -124,20 +124,20 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Stop without start will be ignored")
-    public void natsServer_stopWithoutStart_shouldNotRunIntroExceptionOrInterrupt() {
+    void natsServer_stopWithoutStart_shouldNotRunIntroExceptionOrInterrupt() {
         NatsServer natsServer = new NatsServer(4241).source(natsSource);
         natsServer.stop();
     }
 
 //    @Test
-//    public void natsServer_withoutPort_shouldThrowMissingFormatArgumentException() {
+//    void natsServer_withoutPort_shouldThrowMissingFormatArgumentException() {
 //        NatsServer natsServer = new NatsServer(4242).source(natsSource);
 //        natsServer.stop();
 //    }
 
     @Test
     @DisplayName("Config port with NULL [FAIL]")
-    public void natsServer_withNullablePortValue_shouldThrowMissingFormatArgumentException() {
+    void natsServer_withNullablePortValue_shouldThrowMissingFormatArgumentException() {
         NatsServer natsServer = new NatsServer(4243).source(natsSource);
         natsServer.getNatsServerConfig().put(PORT, null);
         assertThrows(
@@ -149,7 +149,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Configure with NULL value should be ignored")
-    public void natsServer_withNullableConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
+    void natsServer_withNullableConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
         NatsServer natsServer = new NatsServer(4236).source(natsSource);
         natsServer.getNatsServerConfig().put(MAX_AGE, null);
         natsServer.start();
@@ -158,7 +158,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Configure with NULL invalid value [FAIL]")
-    public void natsServer_withInvalidConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
+    void natsServer_withInvalidConfigValue_shouldNotRunIntroExceptionOrInterrupt() throws IOException {
         NatsServer natsServer = new NatsServer(MAX_AGE + ":invalidValue", PORT + ":4237").source(natsSource);
         assertThrows(
                 PortUnreachableException.class,
@@ -170,7 +170,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Validate Windows path")
-    public void natsServerOnWindows_shouldAddExeToPath() {
+    void natsServerOnWindows_shouldAddExeToPath() {
         NatsServer natsServer = new NatsServer(4244).source(natsSource);
         String windowsNatsServerPath = natsServer.getNatsServerPath(WINDOWS).toString();
         String expectedExe = NatsServer.BEAN_NAME.toLowerCase() + ".exe";
@@ -179,7 +179,7 @@ public class NatsServerWithoutAnnotationTest {
 
     @Test
     @DisplayName("Config without url [FAIL]")
-    public void natsServerWithoutSourceUrl_shouldThrowException() throws IOException {
+    void natsServerWithoutSourceUrl_shouldThrowException() throws IOException {
         NatsServer natsServer = new NatsServer(4239).source(natsSource);
         natsServer.getNatsServerPath(SystemUtil.getOsType()).toFile().delete();
         natsServer.source(null);

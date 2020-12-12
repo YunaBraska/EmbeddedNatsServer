@@ -34,6 +34,7 @@ public enum NatsServerConfig {
     CLUSTER_TRAILING_LOGS(null, "[INT] Number of log entries to leave after a snapshot and compaction"),
     CLUSTER_SYNC(null, "[BOOL] Do a file sync after every write to the replication log and message store"),
     CLUSTER_RAFT_LOGGING(null, "[BOOL] Enable logging from the Raft library (disabled by default)"),
+    CLUSTER_ALLOW_ADD_REMOVE_NODE(null, "[BOOL] Enable the ability to send NATS requests to the leader to add/remove cluster"),
 
     //Streaming Server File Store Options
     FILE_COMPACT_ENABLED(null, "[BOOL] Enable file compaction"),

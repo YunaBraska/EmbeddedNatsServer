@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @EnableNatsServer
 @Tag("IntegrationTest")
 @DisplayName("NatsServerTest")
-public class NatsServerComponentTest {
+class NatsServerComponentTest {
 
     @Autowired
     private NatsServer natsServer;

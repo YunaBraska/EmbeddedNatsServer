@@ -1,4 +1,4 @@
-# nats-streaming-server-embedded v0.19.0
+# nats-streaming-server-embedded
 Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-server) for testing which contains the original [Nats streaming server](https://github.com/nats-io/nats-streaming-server) 
 
 [![Build][build_shield]][build_link]

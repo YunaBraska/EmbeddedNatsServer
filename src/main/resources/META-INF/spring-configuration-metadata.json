@@ -168,6 +168,11 @@
     "description" : "Enable logging from the Raft library (disabled by default)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
+    "name" : "nats.server.cluster_allow_add_remove_node",
+    "type" : "java.lang.Boolean",
+    "description" : "Enable the ability to send NATS requests to the leader to add/remove cluster",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
     "name" : "nats.server.file_compact_enabled",
     "type" : "java.lang.Boolean",
     "description" : "Enable file compaction",

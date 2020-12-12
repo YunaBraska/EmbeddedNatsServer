@@ -4,6 +4,7 @@ import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.clu.logic.Terminal;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.config.NatsServerSourceConfig;
+import berlin.yuna.natsserver.model.exception.NatsDownloadException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.MissingFormatArgumentException;
@@ -40,7 +41,7 @@ import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 import static java.util.Comparator.comparingLong;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 /**
  * {@link NatsServer}
@@ -155,16 +156,18 @@ public class NatsServer implements DisposableBean {
 
         LOG.debug(command);
 
-        process = new Terminal()
-                .consumerInfo(System.out::println)
-                .consumerError(System.err::println)
+        final Terminal terminal = new Terminal()
+                .consumerInfo(LOG::info)
+                .consumerError(LOG::error)
                 .timeoutMs(10000)
                 .breakOnError(false)
-                .execute(command)
-                .process();
+                .execute(command);
+        process = terminal.process();
 
         if (!waitForPort(false)) {
-            throw new PortUnreachableException(BEAN_NAME + " failed to start.");
+            throw new PortUnreachableException(BEAN_NAME + " failed to start with port [" + port() + "]"
+                    + "\n" + terminal.consoleInfo()
+                    + "\n" + terminal.consoleError());
         }
         LOG.info("Started [{}] port [{}] version [{}]", BEAN_NAME, port(), OPERATING_SYSTEM);
         return this;
@@ -180,11 +183,9 @@ public class NatsServer implements DisposableBean {
     public NatsServer stop() {
         try {
             LOG.info("Stopping [{}]", BEAN_NAME);
-//            Runtime.getRuntime().addShutdownHook(new Thread(() -> process.destroy()));
-//            killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
             process.destroy();
             process.waitFor();
-        } catch (NullPointerException | InterruptedException e) {
+        } catch (NullPointerException | InterruptedException ignored) {
             LOG.warn("Could not stop [{}] cause cant find process", BEAN_NAME);
             killProcessByName(getNatsServerPath(OPERATING_SYSTEM).getFileName().toString());
         } finally {
@@ -234,7 +235,7 @@ public class NatsServer implements DisposableBean {
      * @return Resource/{SIMPLE_CLASS_NAME}/{NATS_SERVER_VERSION}/{OPERATING_SYSTEM}/{SIMPLE_CLASS_NAME}
      */
     Path getNatsServerPath(final SystemUtil.OperatingSystem operatingSystem) {
-        StringBuilder targetPath = new StringBuilder();
+        final StringBuilder targetPath = new StringBuilder();
         targetPath.append(BEAN_NAME.toLowerCase()).append(File.separator);
         targetPath.append(operatingSystem).append(File.separator);
         targetPath.append(BEAN_NAME.toLowerCase()).append((operatingSystem == WINDOWS ? ".exe" : ""));
@@ -261,30 +262,42 @@ public class NatsServer implements DisposableBean {
     }
 
     private Path downloadNats(final String targetPath) {
-        Path tmpPath = Paths.get(TMP_DIR, targetPath);
+        final Path tmpPath = Paths.get(TMP_DIR, targetPath);
         if (Files.notExists(tmpPath)) {
-            try {
-                File zipFile = new File(tmpPath.getParent().toFile(), tmpPath.getFileName().toString() + ".zip");
-                LOG.info("Start download natsServer from [{}] to [{}]", source, zipFile);
-                Files.createDirectories(tmpPath.getParent());
-                FileOutputStream fos = new FileOutputStream(zipFile);
+            final File zipFile = new File(tmpPath.getParent().toFile(), tmpPath.getFileName().toString() + ".zip");
+            LOG.info("Start download natsServer from [{}] to [{}]", source, zipFile);
+            createParents(tmpPath);
+            try (FileOutputStream fos = new FileOutputStream(zipFile)) {
                 fos.getChannel().transferFrom(newChannel(new URL(source).openStream()), 0, Long.MAX_VALUE);
-                return unzip(zipFile, tmpPath.toFile());
+                return setExecutable(unzip(zipFile, tmpPath.toFile()));
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new NatsDownloadException(e);
             }
         }
         LOG.info("Finished download natsServer unpacked to [{}]", tmpPath.toUri());
         return tmpPath;
     }
 
+    private void createParents(Path tmpPath) {
+        try {
+            Files.createDirectories(tmpPath.getParent());
+        } catch (IOException ignored) {
+        }
+    }
+
+    private Path setExecutable(final Path path) {
+        path.toFile().setExecutable(true);
+        return path;
+    }
+
     private Path unzip(final File source, final File target) throws IOException {
-        final ZipFile zipFile = new ZipFile(source);
-        ZipEntry max = zipFile.stream().max(comparingLong(ZipEntry::getSize))
-                .orElseThrow(() -> new IllegalStateException("File not found " + zipFile));
-        Files.copy(zipFile.getInputStream(max), target.toPath());
-        Files.delete(source.toPath());
-        return target.toPath();
+        try (final ZipFile zipFile = new ZipFile(source)) {
+            ZipEntry max = zipFile.stream().max(comparingLong(ZipEntry::getSize))
+                    .orElseThrow(() -> new IllegalStateException("File not found " + zipFile));
+            Files.copy(zipFile.getInputStream(max), target.toPath());
+            Files.delete(source.toPath());
+            return target.toPath();
+        }
     }
 
     private boolean waitForPort(boolean isFree) {
@@ -315,7 +328,7 @@ public class NatsServer implements DisposableBean {
         for (Entry<NatsServerConfig, String> entry : getNatsServerConfig().entrySet()) {
             String key = entry.getKey().getKey();
 
-            if (isEmpty(entry.getValue())) {
+            if (!hasText(entry.getValue())) {
                 LOG.warn("Skipping property [{}] with value [{}]", key, entry.getValue());
                 continue;
             }
@@ -329,10 +342,10 @@ public class NatsServer implements DisposableBean {
     }
 
     private Map<NatsServerConfig, String> getDefaultConfig() {
-        Map<NatsServerConfig, String> defaultConfig = new HashMap<>();
-        for (NatsServerConfig natsServerConfig : NatsServerConfig.values()) {
-            if (natsServerConfig.getDefaultValue() != null) {
-                defaultConfig.put(natsServerConfig, natsServerConfig.getDefaultValue().toString());
+        final Map<NatsServerConfig, String> defaultConfig = new EnumMap<>(NatsServerConfig.class);
+        for (NatsServerConfig natsConfig : NatsServerConfig.values()) {
+            if (natsConfig.getDefaultValue() != null) {
+                defaultConfig.put(natsConfig, natsConfig.getDefaultValue().toString());
             }
         }
         return defaultConfig;

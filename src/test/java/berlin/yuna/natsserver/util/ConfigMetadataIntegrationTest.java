@@ -17,11 +17,11 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Tag("UnitTest")
-public class ConfigMetadataIntegrationTest {
+class ConfigMetadataIntegrationTest {
 
     @Test
     @DisplayName("Generate spring boot autocompletion")
-    public void generate() throws IOException {
+    void generate() throws IOException {
         ConfigurationMetadata metadata = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
         for (NatsServerConfig config : NatsServerConfig.values()) {
             String name = config.name().toLowerCase();

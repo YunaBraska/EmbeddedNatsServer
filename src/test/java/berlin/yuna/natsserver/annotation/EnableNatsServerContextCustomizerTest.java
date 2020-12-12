@@ -1,6 +1,7 @@
 package berlin.yuna.natsserver.annotation;
 
 import berlin.yuna.natsserver.logic.NatsServer;
+import berlin.yuna.natsserver.model.exception.NatsStartException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,19 +19,19 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @Tag("IntegrationTest")
 @DisplayName("ContextCustomizerTest")
-public class EnableNatsServerContextCustomizerTest {
+class EnableNatsServerContextCustomizerTest {
 
     @Autowired
     private ConfigurableApplicationContext context;
 
     @Test
     @DisplayName("with invalid port [FAIL]")
-    public void runCustomizer_withInvalidPort_shouldNotStartNatsServer() {
+    void runCustomizer_withInvalidPort_shouldNotStartNatsServer() {
         EnableNatsServer enableNatsServer = mock(EnableNatsServer.class);
         when(enableNatsServer.natsServerConfig()).thenReturn(new String[]{PORT + ":invalidPortValue"});
         EnableNatsServerContextCustomizer customizer = new EnableNatsServerContextCustomizer(enableNatsServer);
         assertThrows(
-                IllegalArgumentException.class,
+                NatsStartException.class,
                 () -> customizer.customizeContext(context, mock(MergedContextConfiguration.class)),
                 "Failed to initialise EnableNatsServer"
         );

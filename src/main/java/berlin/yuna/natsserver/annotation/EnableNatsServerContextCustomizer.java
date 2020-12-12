@@ -3,6 +3,7 @@ package berlin.yuna.natsserver.annotation;
 import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.natsserver.config.NatsServerConfig;
 import berlin.yuna.natsserver.logic.NatsServer;
+import berlin.yuna.natsserver.model.exception.NatsStartException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
@@ -59,7 +60,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
             natsServerBean.start();
         } catch (Exception e) {
             natsServerBean.stop();
-            throw new IllegalArgumentException("Failed to initialise " + EnableNatsServer.class.getSimpleName(), e);
+            throw new NatsStartException("Failed to initialise " + EnableNatsServer.class.getSimpleName(), e);
         }
 
         beanFactory.initializeBean(natsServerBean, NatsServer.BEAN_NAME);

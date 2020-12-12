@@ -18,14 +18,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Tag("IntegrationTest")
 @EnableNatsServer(natsServerConfig = "port:4235")
 @DisplayName("NatsServer AutoConfig port from map test")
-public class NatsServerWithPortMapComponentTest {
+class NatsServerWithPortMapComponentTest {
 
     @Autowired
     private NatsServer natsServer;
 
     @Test
     @DisplayName("Overwrite port on config map")
-    public void natsServer_withCustomPortInMap_shouldStartWithCustomPort() throws IOException {
+    void natsServer_withCustomPortInMap_shouldStartWithCustomPort() throws IOException {
         new Socket("localhost", 4235).close();
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.port(), is(4235));
