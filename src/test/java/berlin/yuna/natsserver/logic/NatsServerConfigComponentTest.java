@@ -34,7 +34,7 @@ public class NatsServerConfigComponentTest {
 
     @Test
     @DisplayName("Compare nats with java config")
-    public void compareNatsServerConfig() {
+    void compareNatsServerConfig() {
         Path natsServerPath = new NatsServer(4248).source(natsSource).getNatsServerPath(getOsType());
 
         StringBuilder console = new StringBuilder();
@@ -46,21 +46,22 @@ public class NatsServerConfigComponentTest {
         List<String> javaConfigKeys = stream(NatsServerConfig.values()).map(Enum::name).collect(Collectors.toList());
 
         Set<String> missingConfigInJava = getNotMatchingEntities(consoleConfigKeys, javaConfigKeys);
-        assertThat(missingConfigInJava, is(empty()));
 
         Set<String> missingConfigInConsole = getNotMatchingEntities(javaConfigKeys, consoleConfigKeys);
-        assertThat(missingConfigInConsole, is(empty()));
+        final String reason = "ConsoleConfigKeys " + consoleConfigKeys.toString() + "\n\n JavaConfigKeys " + javaConfigKeys.toString();
+        assertThat(reason, missingConfigInJava, is(empty()));
+        assertThat(reason, missingConfigInConsole, is(empty()));
     }
 
     @Test
     @DisplayName("Compare config key with one dash")
-    public void getKey_WithOneDash_ShouldBeSuccessful() {
+    void getKey_WithOneDash_ShouldBeSuccessful() {
         assertThat(NatsServerConfig.SECURE.getKey(), is(equalTo("-secure ")));
     }
 
     @Test
     @DisplayName("Compare config key with equal sign")
-    public void getKey_WithBoolean_ShouldAddOneEqualSign() {
+    void getKey_WithBoolean_ShouldAddOneEqualSign() {
         assertThat(NatsServerConfig.CLUSTERED.getKey(), is(equalTo("--clustered=")));
     }
 

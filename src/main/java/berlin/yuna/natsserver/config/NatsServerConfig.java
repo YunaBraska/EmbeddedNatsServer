@@ -1,7 +1,5 @@
 package berlin.yuna.natsserver.config;
 
-import java.util.UUID;
-
 public enum NatsServerConfig {
 
     //Streaming Server Options
@@ -27,7 +25,7 @@ public enum NatsServerConfig {
 
     //Streaming Server Clustering Options
     CLUSTERED("false", "[BOOL] Run the server in a clustered configuration (default: false)"),
-    CLUSTER_NODE_ID(UUID.randomUUID().toString(), "[STRING] ID of the node within the cluster if there is no stored ID (default: random UUID)"),
+    CLUSTER_NODE_ID("82837aa8-b23d-481d-a07b-910a14fd0385", "[STRING] ID of the node within the cluster"),
     CLUSTER_BOOTSTRAP("false", "[BOOL] Bootstrap the cluster if there is no existing state by electing self as leader (default: false)"),
     CLUSTER_PEERS(null, "[STRING] List of cluster peer node IDs to bootstrap cluster state."),
     CLUSTER_LOG_PATH(null, "[STRING] Directory to store log replication data"),

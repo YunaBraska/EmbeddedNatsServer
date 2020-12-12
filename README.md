@@ -1,4 +1,4 @@
-# nats-streaming-server-embedded
+# nats-streaming-server-embedded v0.19.0
 Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-server) for testing which contains the original [Nats streaming server](https://github.com/nats-io/nats-streaming-server) 
 
 [![Build][build_shield]][build_link]
@@ -14,12 +14,12 @@ Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-serve
 [![Size][size_shield]][size_shield]
 ![Label][label_shield]
 
-[build_shield]: https://img.shields.io/travis/YunaBraska/nats-streaming-server-embedded/master?style=flat-square
-[build_link]: https://travis-ci.org/YunaBraska/nats-streaming-server-embedded
+[build_shield]: https://github.com/YunaBraska/nats-streaming-server-embedded/workflows/JAVA_CI/badge.svg
+[build_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/actions?query=workflow%3AJAVA_CI
 [maintainable_shield]: https://img.shields.io/codeclimate/maintainability/YunaBraska/nats-streaming-server-embedded?style=flat-square
 [maintainable_link]: https://codeclimate.com/github/YunaBraska/nats-streaming-server-embedded/maintainability
-[coverage_shield]: https://img.shields.io/codecov/c/github/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[coverage_link]: https://codecov.io/gh/YunaBraska/nats-streaming-server-embedded?branch=master
+[coverage_shield]: https://img.shields.io/codeclimate/coverage/YunaBraska/nats-streaming-server-embedded?style=flat-square
+[coverage_link]: https://codeclimate.com/github/YunaBraska/nats-streaming-server-embedded/test_coverage
 [issues_shield]: https://img.shields.io/github/issues/YunaBraska/nats-streaming-server-embedded?style=flat-square
 [issues_link]: https://github.com/YunaBraska/nats-streaming-server-embedded/commits/master
 [commit_shield]: https://img.shields.io/github/last-commit/YunaBraska/nats-streaming-server-embedded?style=flat-square
