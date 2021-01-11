@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ class GithubWorkflowTemplate {
     @Test
     @DisplayName("Generate Workflows")
     void generateWorkflows() throws IOException {
-        final Path path = Path.of(System.getProperty("user.dir"), ".github", "workflows");
+        final Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir"), ".github", "workflows");
         assertThat(Files.exists(path), is(true));
         assertThat(Files.isDirectory(path), is(true));
         final Set<Path> workflows = Files.walk(path, 1).filter(Files::isRegularFile).collect(Collectors.toSet());
@@ -85,7 +86,7 @@ class GithubWorkflowTemplate {
 
     private void readLines(final Path file, final Consumer<String> consumer) {
         try {
-            Scanner scanner = new Scanner(file, UTF_8).useDelimiter("(?<=\n)|(?!\n)(?<=\r)");
+            Scanner scanner = new Scanner(file, UTF_8.name()).useDelimiter("(?<=\n)|(?!\n)(?<=\r)");
             while (scanner.hasNext()) {
                 final String line = scanner.next();
                 if (line != null) {

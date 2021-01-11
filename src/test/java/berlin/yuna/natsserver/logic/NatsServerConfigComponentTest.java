@@ -8,9 +8,14 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,6 +28,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static berlin.yuna.clu.logic.SystemUtil.getOsType;
+import static berlin.yuna.clu.logic.SystemUtil.readFile;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
@@ -71,17 +77,17 @@ class NatsServerConfigComponentTest {
     }
 
     private void updateNatsVersion() throws IOException {
-        final Path configPath = Files.walk(Path.of(System.getProperty("user.dir")), 99).filter(path -> path.getFileName().toString().equalsIgnoreCase(NatsServerSourceConfig.class.getSimpleName() + ".java")).findFirst().orElse(null);
+        final Path configPath = Files.walk(FileSystems.getDefault().getPath(System.getProperty("user.dir")), 99).filter(path -> path.getFileName().toString().equalsIgnoreCase(NatsServerSourceConfig.class.getSimpleName() + ".java")).findFirst().orElse(null);
         URL url = new URL("https://api.github.com/repos/nats-io/nats-streaming-server/releases/latest");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
-        final String json = new String(con.getInputStream().readAllBytes(), UTF_8);
+        final String json = read(con.getInputStream());
         final Matcher matcher = Pattern.compile("\"tag_name\":\"(?<version>.*?)\"").matcher(json);
         if (matcher.find()) {
-            String content = Files.readString(requireNonNull(configPath));
+            String content = readFile(requireNonNull(configPath));
             content = content.replaceAll("DEFAULT_VERSION.*=.*", "DEFAULT_VERSION = \"" + matcher.group("version") + "\";");
-            Files.writeString(configPath, content);
+            Files.write(configPath, content.getBytes());
         } else {
             throw new  IllegalStateException("Could not update nats server version");
         }
@@ -104,5 +110,11 @@ class NatsServerConfigComponentTest {
             allMatches.add(m.group(1).toUpperCase());
         }
         return allMatches;
+    }
+
+    public static String read(InputStream input) throws IOException {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(input, UTF_8))) {
+            return buffer.lines().collect(Collectors.joining("\n"));
+        }
     }
 }

@@ -38,9 +38,11 @@
         <!-- VERSIONS -->
         <gson.version>2.8.6</gson.version>
         <spring-boot.version>2.4.1</spring-boot.version>
+        <command-line-util.version>0.1.4</command-line-util.version>
+        <config-metadata-generator.version>0.6.5</config-metadata-generator.version>
+        <!-- VERSIONS BUILD -->
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-scm-plugin.version>1.11.2</maven-scm-plugin.version>
-        <command-line-util.version>0.1.1</command-line-util.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
         <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
@@ -48,7 +50,6 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <config-metadata-generator.version>0.6.4</config-metadata-generator.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     </properties>
 

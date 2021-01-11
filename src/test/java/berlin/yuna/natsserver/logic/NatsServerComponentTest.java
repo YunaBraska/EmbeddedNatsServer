@@ -34,7 +34,7 @@ class NatsServerComponentTest {
 
     @Test
     @DisplayName("Download and start server")
-    public void natsServer_shouldDownloadUnzipAndStart() throws IOException {
+    void natsServer_shouldDownloadUnzipAndStart() throws IOException {
         Files.deleteIfExists(natsServer.getNatsServerPath(getOsType()));
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.port(), is(4222));
@@ -43,19 +43,19 @@ class NatsServerComponentTest {
 
     @Test
     @DisplayName("Port config with double dash")
-    public void secondNatsServer_withDoubleDotSeparatedProperty_shouldStartSuccessful() {
+    void secondNatsServer_withDoubleDotSeparatedProperty_shouldStartSuccessful() {
         assertNatsServerStart(4225, "--port:4225");
     }
 
     @Test
     @DisplayName("Port config without dashes")
-    public void secondNatsServer_withOutMinusProperty_shouldStartSuccessful() {
+    void secondNatsServer_withOutMinusProperty_shouldStartSuccessful() {
         assertNatsServerStart(4226, "port:4226");
     }
 
     @Test
     @DisplayName("Invalid config [FAIL]")
-    public void secondNatsServer_withInvalidProperty_shouldFailToStart() {
+    void secondNatsServer_withInvalidProperty_shouldFailToStart() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> assertNatsServerStart(4228, "p:4228"),
@@ -65,7 +65,7 @@ class NatsServerComponentTest {
 
     @Test
     @DisplayName("ToString")
-    public void toString_shouldPrintPortAndOs() {
+    void toString_shouldPrintPortAndOs() {
         String runningNatsServer = natsServer.toString();
         assertThat(runningNatsServer, containsString(getOsType().toString()));
         assertThat(runningNatsServer, containsString("4222"));

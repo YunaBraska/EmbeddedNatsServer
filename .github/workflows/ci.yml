@@ -18,10 +18,10 @@ jobs:
     steps:
       #START_TEMPLATE UPDATE_AND_TEST
       - uses: actions/checkout@v2
-      - name: Set up JDK 15
+      - name: Set up JDK 8
         uses: actions/setup-java@v1
         with:
-          java-version: 15
+          java-version: 8
       - name: Maven compile and update dependencies
         run: |
           ./mvnw -B -q versions:update-properties -DgenerateBackupPoms=false
