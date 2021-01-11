@@ -113,6 +113,11 @@
     "description" : "Encryption Key. It is recommended to specify it through the NATS_STREAMING_ENCRYPTION_KEY environment variable instead",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
+    "name" : "nats.server.replace_durable",
+    "type" : "java.lang.Boolean",
+    "description" : "Replace the existing durable subscription instead of reporting a duplicate durable error",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
     "name" : "nats.server.clustered",
     "type" : "java.lang.Boolean",
     "description" : "Run the server in a clustered configuration (default: false)",
@@ -278,6 +283,11 @@
     "description" : "Maximum number of opened connections to the database",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
+    "name" : "nats.server.sql_bulk_insert_limit",
+    "type" : "java.lang.Integer",
+    "description" : "Maximum number of messages stored with a single SQL \"INSERT\" statement",
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+  }, {
     "name" : "nats.server.secure",
     "type" : "java.lang.Boolean",
     "description" : "Use a TLS connection to the NATS server without verification; weaker than specifying certificates.",
@@ -430,36 +440,36 @@
     "type" : "java.lang.String",
     "description" : "ARM SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-linux-arm64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-linux-arm64.zip"
   }, {
     "name" : "nats.source.linux",
     "type" : "java.lang.String",
     "description" : "LINUX SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-linux-amd64.zip"
   }, {
     "name" : "nats.source.mac",
     "type" : "java.lang.String",
     "description" : "MAC SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-darwin-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-darwin-amd64.zip"
   }, {
     "name" : "nats.source.windows",
     "type" : "java.lang.String",
     "description" : "WINDOWS SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-windows-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-windows-amd64.zip"
   }, {
     "name" : "nats.source.solaris",
     "type" : "java.lang.String",
     "description" : "SOLARIS SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-linux-amd64.zip"
   }, {
     "name" : "nats.source.default",
     "type" : "java.lang.String",
     "description" : "DEFAULT SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.19.0/nats-streaming-server-v0.19.0-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.20.0/nats-streaming-server-v0.20.0-linux-amd64.zip"
   } ]
 }

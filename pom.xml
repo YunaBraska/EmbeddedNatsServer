@@ -6,7 +6,7 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>nats-streaming-server-embedded</artifactId>
-    <version>0.19.6</version>
+    <version>0.20.0</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -30,7 +30,7 @@
 
     <properties>
         <!-- PROPERTIES -->
-        <java.version>15</java.version>
+        <java.version>8</java.version>
         <project.encoding>UTF-8</project.encoding>
         <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>

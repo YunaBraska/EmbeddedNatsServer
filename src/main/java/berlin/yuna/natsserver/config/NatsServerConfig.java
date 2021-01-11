@@ -22,6 +22,7 @@ public enum NatsServerConfig {
     ENCRYPT(null, "[BOOL] Specify if server should use encryption at rest"),
     ENCRYPTION_CIPHER(null, "[STRING] Cipher to use for encryption. Currently support AES and CHAHA (ChaChaPoly). Defaults to AES"),
     ENCRYPTION_KEY(null, "[STRING] Encryption Key. It is recommended to specify it through the NATS_STREAMING_ENCRYPTION_KEY environment variable instead"),
+    REPLACE_DURABLE(null, "[BOOL] Replace the existing durable subscription instead of reporting a duplicate durable error"),
 
     //Streaming Server Clustering Options
     CLUSTERED("false", "[BOOL] Run the server in a clustered configuration (default: false)"),
@@ -60,6 +61,7 @@ public enum NatsServerConfig {
     SQL_SOURCE(null, "[STRING] Datasource used when opening an SQL connection to the database"),
     SQL_NO_CACHING(null, "[BOOL] Enable/Disable caching for improved performance"),
     SQL_MAX_OPEN_CONNS(null, "[INT] Maximum number of opened connections to the database"),
+    SQL_BULK_INSERT_LIMIT(null, "[INT] Maximum number of messages stored with a single SQL \"INSERT\" statement"),
 
     //Streaming Server TLS Options
     SECURE(null, "-[BOOL] Use a TLS connection to the NATS server without verification; weaker than specifying certificates."),
