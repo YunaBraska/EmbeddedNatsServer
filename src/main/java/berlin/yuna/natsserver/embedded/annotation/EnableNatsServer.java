@@ -1,6 +1,6 @@
-package berlin.yuna.natsserver.annotation;
+package berlin.yuna.natsserver.embedded.annotation;
 
-import berlin.yuna.natsserver.logic.NatsServer;
+import berlin.yuna.natsserver.embedded.logic.NatsServer;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;

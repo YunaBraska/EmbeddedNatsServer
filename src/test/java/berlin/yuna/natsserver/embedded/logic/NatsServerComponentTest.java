@@ -1,12 +1,10 @@
-package berlin.yuna.natsserver.logic;
+package berlin.yuna.natsserver.embedded.logic;
 
-import berlin.yuna.natsserver.annotation.EnableNatsServer;
+import berlin.yuna.natsserver.embedded.annotation.EnableNatsServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -28,9 +26,6 @@ class NatsServerComponentTest {
 
     @Autowired
     private NatsServer natsServer;
-
-    @Value("${nats.source.default}")
-    private String natsSource;
 
     @Test
     @DisplayName("Download and start server")
@@ -72,7 +67,7 @@ class NatsServerComponentTest {
     }
 
     private void assertNatsServerStart(final int port, final String... natsServerConfig) {
-        NatsServer natsServer = new NatsServer(natsServerConfig).source(natsSource);
+        final NatsServer natsServer = new NatsServer(natsServerConfig);
         try {
             natsServer.start();
             new Socket("localhost", port).close();

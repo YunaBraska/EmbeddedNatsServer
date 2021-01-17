@@ -65,7 +65,7 @@
   }, {
     "name" : "nats.server.nats_server",
     "type" : "java.lang.String",
-    "description" : "Connect to this external NATS Server URL (embedded otherwise)",
+    "description" : "Connect to this external NATS Server URL (default otherwise)",
     "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
   }, {
     "name" : "nats.server.stan_config",
@@ -86,7 +86,8 @@
     "name" : "nats.server.hb_fail_count",
     "type" : "java.lang.Integer",
     "description" : "Number of failed heartbeats before server closes the client connection",
-    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig"
+    "sourceType" : "berlin.yuna.natsserver.config.NatsServerConfig",
+    "defaultValue" : 3
   }, {
     "name" : "nats.server.ft_group",
     "type" : "java.lang.String",

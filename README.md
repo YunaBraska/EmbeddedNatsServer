@@ -1,5 +1,5 @@
 # nats-streaming-server-embedded
-Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-server) for testing which contains the original [Nats streaming server](https://github.com/nats-io/nats-streaming-server) 
+A spring wrapper of [Java-Nats-Streaming-Server](https://github.com/YunaBraska/nats-streaming-server) which contains the original [Nats streaming server](https://github.com/nats-io/nats-streaming-server)
 
 [![Build][build_shield]][build_link]
 [![Maintainable][maintainable_shield]][maintainable_link]
@@ -40,7 +40,7 @@ Embedded [Nats streaming server](https://github.com/nats-io/nats-streaming-serve
 [gitter_link]: https://gitter.im/nats-streaming-server-embedded/Lobby
 
 ### Usage
-* One annotation to setup the powerful [Nats streaming server](https://github.com/nats-io/nats-streaming-server)
+* One annotation to set up the powerful [Nats streaming server](https://github.com/nats-io/nats-streaming-server)
 ```java
 @SpringBootTest
 @RunWith(SpringRunner.class)

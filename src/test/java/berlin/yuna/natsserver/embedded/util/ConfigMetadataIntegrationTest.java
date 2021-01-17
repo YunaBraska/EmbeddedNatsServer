@@ -1,4 +1,4 @@
-package berlin.yuna.natsserver.util;
+package berlin.yuna.natsserver.embedded.util;
 
 
 import berlin.yuna.configmetadata.model.ConfigurationMetadata;
@@ -44,7 +44,7 @@ class ConfigMetadataIntegrationTest {
         return description.substring(description.indexOf(']') + 1).trim();
     }
 
-    private Class parseType(final String description) {
+    private Class<?> parseType(final String description) {
         String goType = description.replace("-", "");
         goType = goType.substring(1, goType.indexOf(']')).trim();
         switch (goType) {

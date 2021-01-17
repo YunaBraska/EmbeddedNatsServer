@@ -1,2 +1,2 @@
 org.springframework.test.context.ContextCustomizerFactory=\
-berlin.yuna.natsserver.annotation.EnableNatsServerContextCustomizerFactory
+berlin.yuna.natsserver.embedded.annotation.EnableNatsServerContextCustomizerFactory

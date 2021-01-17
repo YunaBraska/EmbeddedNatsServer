@@ -1,7 +1,9 @@
-package berlin.yuna.natsserver.annotation;
+package berlin.yuna.natsserver.embedded.annotation;
 
-import berlin.yuna.natsserver.logic.NatsServer;
-import berlin.yuna.natsserver.model.exception.NatsStartException;
+import berlin.yuna.natsserver.config.NatsServerConfig;
+import berlin.yuna.natsserver.embedded.logic.NatsServer;
+import berlin.yuna.natsserver.embedded.model.exception.NatsStartException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.MergedContextConfiguration;
 
-import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,9 +29,9 @@ class EnableNatsServerContextCustomizerTest {
     @DisplayName("with invalid port [FAIL]")
     void runCustomizer_withInvalidPort_shouldNotStartNatsServer() {
         EnableNatsServer enableNatsServer = mock(EnableNatsServer.class);
-        when(enableNatsServer.natsServerConfig()).thenReturn(new String[]{PORT + ":invalidPortValue"});
+        when(enableNatsServer.natsServerConfig()).thenReturn(new String[]{NatsServerConfig.PORT + ":invalidPortValue"});
         EnableNatsServerContextCustomizer customizer = new EnableNatsServerContextCustomizer(enableNatsServer);
-        assertThrows(
+        Assertions.assertThrows(
                 NatsStartException.class,
                 () -> customizer.customizeContext(context, mock(MergedContextConfiguration.class)),
                 "Failed to initialise EnableNatsServer"

@@ -1,9 +1,10 @@
-package berlin.yuna.natsserver.annotation;
+package berlin.yuna.natsserver.embedded.annotation;
 
 import berlin.yuna.clu.logic.SystemUtil;
 import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.natsserver.logic.NatsServer;
-import berlin.yuna.natsserver.model.exception.NatsStartException;
+import berlin.yuna.natsserver.embedded.logic.NatsServer;
+import berlin.yuna.natsserver.embedded.model.exception.NatsStartException;
+import berlin.yuna.natsserver.logic.Nats;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
@@ -16,8 +17,9 @@ import org.springframework.util.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
+import static berlin.yuna.natsserver.embedded.logic.NatsServer.BEAN_NAME;
 import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 class EnableNatsServerContextCustomizer implements ContextCustomizer {
 
@@ -29,7 +31,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
      *
      * @param enableNatsServer {@link EnableNatsServer} annotation class
      */
-    EnableNatsServerContextCustomizer(EnableNatsServer enableNatsServer) {
+    EnableNatsServerContextCustomizer(final EnableNatsServer enableNatsServer) {
         this.enableNatsServer = enableNatsServer;
     }
 
@@ -40,7 +42,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
      * @param mergedConfig {@link MergedContextConfiguration} is not in use
      */
     @Override
-    public void customizeContext(ConfigurableApplicationContext context, MergedContextConfiguration mergedConfig) {
+    public void customizeContext(final ConfigurableApplicationContext context, final MergedContextConfiguration mergedConfig) {
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
         Assert.isInstanceOf(DefaultSingletonBeanRegistry.class, beanFactory);
         ConfigurableEnvironment environment = context.getEnvironment();
@@ -53,7 +55,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         NatsServer natsServerBean = new NatsServer(enableNatsServer.natsServerConfig());
         natsServerBean.port(overwritePort(natsServerBean));
         String sourceUrl = overwriteSourceUrl(environment, natsServerBean.source());
-        natsServerBean.source(isEmpty(sourceUrl) ? natsServerBean.source() : sourceUrl);
+        natsServerBean.source(!hasText(sourceUrl) ? natsServerBean.source() : sourceUrl);
         natsServerBean.setNatsServerConfig(mergeConfig(environment, natsServerBean.getNatsServerConfig()));
 
         try {
@@ -63,9 +65,9 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
             throw new NatsStartException("Failed to initialise " + EnableNatsServer.class.getSimpleName(), e);
         }
 
-        beanFactory.initializeBean(natsServerBean, NatsServer.BEAN_NAME);
-        beanFactory.registerSingleton(NatsServer.BEAN_NAME, natsServerBean);
-        ((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(NatsServer.BEAN_NAME, natsServerBean);
+        beanFactory.initializeBean(natsServerBean, BEAN_NAME);
+        beanFactory.registerSingleton(BEAN_NAME, natsServerBean);
+        ((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(BEAN_NAME, natsServerBean);
     }
 
     private String overwriteSourceUrl(final ConfigurableEnvironment environment, final String fallback) {
@@ -81,7 +83,7 @@ class EnableNatsServerContextCustomizer implements ContextCustomizer {
         for (NatsServerConfig natsServerConfig : NatsServerConfig.values()) {
             String key = "nats.server." + natsServerConfig.name().toLowerCase();
             String value = environment.getProperty(key);
-            if (!isEmpty(value) && !mergedConfig.containsKey(natsServerConfig)) {
+            if (hasText(value) && !mergedConfig.containsKey(natsServerConfig)) {
                 mergedConfig.put(natsServerConfig, value);
             }
         }

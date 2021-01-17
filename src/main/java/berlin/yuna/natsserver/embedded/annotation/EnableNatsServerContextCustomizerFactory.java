@@ -1,4 +1,4 @@
-package berlin.yuna.natsserver.annotation;
+package berlin.yuna.natsserver.embedded.annotation;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.ContextConfigurationAttributes;
