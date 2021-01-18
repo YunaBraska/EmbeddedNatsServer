@@ -5,11 +5,11 @@ import berlin.yuna.natsserver.config.NatsServerSourceConfig;
 import berlin.yuna.natsserver.logic.Nats;
 import org.springframework.beans.factory.DisposableBean;
 
-import java.io.File;
 import java.net.ConnectException;
 import java.nio.file.Path;
 
 import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * {@link NatsServer}
@@ -22,14 +22,26 @@ import static berlin.yuna.natsserver.config.NatsServerConfig.PORT;
 public class NatsServer extends Nats implements DisposableBean {
 
     public static final String BEAN_NAME = NatsServer.class.getSimpleName();
+    private final long timeoutMs;
 
     /**
      * Create custom {@link NatsServer} with simplest configuration {@link NatsServer#setNatsServerConfig(String...)}
      *
+     * @param timeoutMs        tear down timeout
      * @param natsServerConfig passes the original parameters to the server. example: port:4222, user:admin, password:admin
      */
-    public NatsServer(final String... natsServerConfig) {
-        this.setNatsServerConfig(natsServerConfig);
+    public NatsServer(final long timeoutMs, final String... natsServerConfig) {
+        super(natsServerConfig);
+        this.timeoutMs = timeoutMs;
+    }
+
+    /**
+     * Create {@link NatsServer} with simplest start able configuration
+     *
+     * @param timeoutMs tear down timeout
+     */
+    public NatsServer(final long timeoutMs) {
+        this.timeoutMs = timeoutMs;
     }
 
     /**
@@ -38,7 +50,7 @@ public class NatsServer extends Nats implements DisposableBean {
      * @return {@link NatsServer}
      * @throws RuntimeException with {@link ConnectException} when there is no port configured
      */
-    public NatsServer port(int port) {
+    public NatsServer port(final int port) {
         getNatsServerConfig().put(PORT, String.valueOf(port));
         return this;
     }
@@ -65,6 +77,6 @@ public class NatsServer extends Nats implements DisposableBean {
      */
     @Override
     public void destroy() {
-        stop();
+        stop(timeoutMs);
     }
 }

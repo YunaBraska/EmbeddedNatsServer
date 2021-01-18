@@ -47,6 +47,16 @@ public @interface EnableNatsServer {
     int port() default 4222;
 
     /**
+     * Defines the startup and teardown timeout
+     */
+    long timeoutMs() default 10000;
+
+    /**
+     * Random port
+     */
+    boolean randomPort() default false;
+
+    /**
      * Passes the original parameters to {@link NatsServer#setNatsServerConfig(String...)} for startup
      * {@link berlin.yuna.natsserver.config.NatsServerConfig}
      */

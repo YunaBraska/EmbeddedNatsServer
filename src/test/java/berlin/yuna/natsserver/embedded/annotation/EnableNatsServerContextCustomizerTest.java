@@ -32,9 +32,9 @@ class EnableNatsServerContextCustomizerTest {
         when(enableNatsServer.natsServerConfig()).thenReturn(new String[]{NatsServerConfig.PORT + ":invalidPortValue"});
         EnableNatsServerContextCustomizer customizer = new EnableNatsServerContextCustomizer(enableNatsServer);
         Assertions.assertThrows(
-                NatsStartException.class,
+                NumberFormatException.class,
                 () -> customizer.customizeContext(context, mock(MergedContextConfiguration.class)),
-                "Failed to initialise EnableNatsServer"
+                "For input string: \"invalidPortValue\""
         );
         assertThrows(
                 NoSuchBeanDefinitionException.class,

@@ -9,7 +9,7 @@ on:
   deployment:
     branches: [ master ]
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 4 * * *'
 
 env:
   SPRING_PROFILE: ci

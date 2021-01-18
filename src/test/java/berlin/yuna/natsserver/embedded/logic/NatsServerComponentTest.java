@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @EnableNatsServer
 @Tag("IntegrationTest")
-@DisplayName("NatsServerTest")
+@DisplayName("NatsServerComponentTest")
 class NatsServerComponentTest {
 
     @Autowired
@@ -33,7 +33,6 @@ class NatsServerComponentTest {
         Files.deleteIfExists(natsServer.getNatsServerPath(getOsType()));
         assertThat(natsServer, is(notNullValue()));
         assertThat(natsServer.port(), is(4222));
-        natsServer.stop();
     }
 
     @Test
@@ -67,7 +66,7 @@ class NatsServerComponentTest {
     }
 
     private void assertNatsServerStart(final int port, final String... natsServerConfig) {
-        final NatsServer natsServer = new NatsServer(natsServerConfig);
+        final NatsServer natsServer = new NatsServer(10000, natsServerConfig);
         try {
             natsServer.start();
             new Socket("localhost", port).close();
