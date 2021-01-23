@@ -1,6 +1,6 @@
-package berlin.yuna.natsserver.embedded.logic;
+package berlin.yuna.natsserver.streaming.embedded.logic;
 
-import berlin.yuna.natsserver.embedded.annotation.EnableNatsServer;
+import berlin.yuna.natsserver.streaming.embedded.annotation.EnableNatsStreamingServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,13 +19,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@EnableNatsServer
+@EnableNatsStreamingServer
 @Tag("IntegrationTest")
 @DisplayName("NatsServerComponentTest")
 class NatsServerComponentTest {
 
     @Autowired
-    private NatsServer natsServer;
+    private NatsStreamingServer natsServer;
 
     @Test
     @DisplayName("Download and start server")
@@ -66,7 +66,7 @@ class NatsServerComponentTest {
     }
 
     private void assertNatsServerStart(final int port, final String... natsServerConfig) {
-        final NatsServer natsServer = new NatsServer(10000, natsServerConfig);
+        final NatsStreamingServer natsServer = new NatsStreamingServer(10000, natsServerConfig);
         try {
             natsServer.start();
             new Socket("localhost", port).close();

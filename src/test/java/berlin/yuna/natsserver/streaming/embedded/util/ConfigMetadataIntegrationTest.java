@@ -1,10 +1,10 @@
-package berlin.yuna.natsserver.embedded.util;
+package berlin.yuna.natsserver.streaming.embedded.util;
 
 
 import berlin.yuna.configmetadata.model.ConfigurationMetadata;
 import berlin.yuna.configmetadata.model.Groups;
-import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.natsserver.config.NatsServerSourceConfig;
+import berlin.yuna.natsserver.config.NatsStreamingConfig;
+import berlin.yuna.natsserver.config.NatsStreamingSourceConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -22,15 +22,15 @@ class ConfigMetadataIntegrationTest {
     @Test
     @DisplayName("Generate spring boot autocompletion")
     void generate() throws IOException {
-        ConfigurationMetadata metadata = new ConfigurationMetadata("nats.server", NatsServerConfig.class);
-        for (NatsServerConfig config : NatsServerConfig.values()) {
+        ConfigurationMetadata metadata = new ConfigurationMetadata("nats.streaming.server", NatsStreamingConfig.class);
+        for (NatsStreamingConfig config : NatsStreamingConfig.values()) {
             String name = config.name().toLowerCase();
             String desc = config.getDescription();
             metadata.newProperties().name(name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());
         }
 
-        Groups groups = metadata.newGroups("nats.source", NatsServerSourceConfig.class);
-        for (NatsServerSourceConfig config : NatsServerSourceConfig.values()) {
+        Groups groups = metadata.newGroups("nats.streaming.source", NatsStreamingSourceConfig.class);
+        for (NatsStreamingSourceConfig config : NatsStreamingSourceConfig.values()) {
             String name = config.name().toLowerCase();
             String desc = config.getDescription();
             metadata.newProperties().name(groups, name).description(parseDesc(desc)).type(parseType(desc)).defaultValue(config.getDefaultValue());

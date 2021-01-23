@@ -1,8 +1,7 @@
-package berlin.yuna.natsserver.embedded.annotation;
+package berlin.yuna.natsserver.streaming.embedded.annotation;
 
-import berlin.yuna.natsserver.config.NatsServerConfig;
-import berlin.yuna.natsserver.embedded.logic.NatsServer;
-import berlin.yuna.natsserver.embedded.model.exception.NatsStartException;
+import berlin.yuna.natsserver.config.NatsStreamingConfig;
+import berlin.yuna.natsserver.streaming.embedded.logic.NatsStreamingServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @Tag("IntegrationTest")
 @DisplayName("ContextCustomizerTest")
-class EnableNatsServerContextCustomizerTest {
+class EnableNatsStreamingServerContextCustomizerTest {
 
     @Autowired
     private ConfigurableApplicationContext context;
@@ -28,9 +27,9 @@ class EnableNatsServerContextCustomizerTest {
     @Test
     @DisplayName("with invalid port [FAIL]")
     void runCustomizer_withInvalidPort_shouldNotStartNatsServer() {
-        EnableNatsServer enableNatsServer = mock(EnableNatsServer.class);
-        when(enableNatsServer.natsServerConfig()).thenReturn(new String[]{NatsServerConfig.PORT + ":invalidPortValue"});
-        EnableNatsServerContextCustomizer customizer = new EnableNatsServerContextCustomizer(enableNatsServer);
+        EnableNatsStreamingServer enableNatsServer = mock(EnableNatsStreamingServer.class);
+        when(enableNatsServer.config()).thenReturn(new String[]{NatsStreamingConfig.PORT + ":invalidPortValue"});
+        EnableNatsStreamingServerContextCustomizer customizer = new EnableNatsStreamingServerContextCustomizer(enableNatsServer);
         Assertions.assertThrows(
                 NumberFormatException.class,
                 () -> customizer.customizeContext(context, mock(MergedContextConfiguration.class)),
@@ -38,7 +37,7 @@ class EnableNatsServerContextCustomizerTest {
         );
         assertThrows(
                 NoSuchBeanDefinitionException.class,
-                () -> context.getBean(NatsServer.class),
+                () -> context.getBean(NatsStreamingServer.class),
                 "No qualifying bean of type"
         );
     }

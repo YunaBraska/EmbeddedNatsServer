@@ -1,4 +1,4 @@
-package berlin.yuna.natsserver.embedded.helper;
+package berlin.yuna.natsserver.streaming.embedded.helper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

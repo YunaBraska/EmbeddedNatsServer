@@ -49,7 +49,7 @@ public class SomeTest {
     [...]
 }
 ```
-* See [NatsServerConfig](https://github.com/YunaBraska/nats-streaming-server-embedded/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsServerConfig.java) class for available properties
+* See [NatsStreamingConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingConfig.java) class for available properties
 * @EnableNatsServer is also reading spring config
 * @EnableNatsServer parameters are overwriting the spring properties
 ```yaml
@@ -62,7 +62,7 @@ nats:
 nats.server.hb_fail_count=3
 ```
 
-* See [NatsServerSourceConfig](https://github.com/YunaBraska/nats-streaming-server-embedded/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsServerSourceConfig.java) class for optional available nats version configuration
+* See [NatsStreamingSourceConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingSourceConfig.java) class for optional available nats version configuration
 ```yaml
 nats:
   source:

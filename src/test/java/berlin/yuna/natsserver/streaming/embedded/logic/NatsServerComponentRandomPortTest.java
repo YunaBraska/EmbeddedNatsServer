@@ -1,6 +1,6 @@
-package berlin.yuna.natsserver.embedded.logic;
+package berlin.yuna.natsserver.streaming.embedded.logic;
 
-import berlin.yuna.natsserver.embedded.annotation.EnableNatsServer;
+import berlin.yuna.natsserver.streaming.embedded.annotation.EnableNatsStreamingServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 @SpringBootTest
-@EnableNatsServer(randomPort = true, timeoutMs = 5000)
+@EnableNatsStreamingServer(randomPort = true, timeoutMs = 5000)
 @Tag("IntegrationTest")
 @DisplayName("NatsServerRandomPortComponentTestTest")
 class NatsServerComponentRandomPortTest {
 
     @Autowired
-    private NatsServer natsServer;
+    private NatsStreamingServer natsServer;
 
     @Test
     @DisplayName("Download and start server")

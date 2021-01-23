@@ -1,6 +1,6 @@
-package berlin.yuna.natsserver.embedded.logic;
+package berlin.yuna.natsserver.streaming.embedded.logic;
 
-import berlin.yuna.natsserver.embedded.annotation.EnableNatsServer;
+import berlin.yuna.natsserver.streaming.embedded.annotation.EnableNatsStreamingServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,19 +16,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
 @Tag("IntegrationTest")
-@EnableNatsServer(port = 4247, natsServerConfig = "port:4246")
-@DisplayName("NatsServer overwrite AutoConfig port test")
-class NatsServerOverwritePortComponentTest {
+@EnableNatsStreamingServer(port = 4234)
+@DisplayName("NatsServer AutoConfig port test")
+class NatsServerWithPortComponentTest {
 
     @Autowired
-    private NatsServer natsServer;
+    private NatsStreamingServer natsServer;
 
     @Test
-    @DisplayName("Custom port overwrites map")
-    void natsServer_customPorts_shouldOverwritePortMap() throws IOException {
-        new Socket("localhost", 4247).close();
+    @DisplayName("Accept custom port")
+    void natsServer_withCustomPort_shouldStartWithCustomPort() throws IOException {
+        new Socket("localhost", 4234).close();
         assertThat(natsServer, is(notNullValue()));
-        assertThat(natsServer.port(), is(4247));
+        assertThat(natsServer.port(), is(4234));
         natsServer.stop();
     }
 }

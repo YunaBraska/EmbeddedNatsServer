@@ -1,4 +1,4 @@
-package berlin.yuna.natsserver.embedded;
+package berlin.yuna.natsserver.streaming.embedded;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
-package berlin.yuna.natsserver.embedded.annotation;
+package berlin.yuna.natsserver.streaming.embedded.annotation;
 
-import berlin.yuna.natsserver.embedded.logic.NatsServer;
+import berlin.yuna.natsserver.streaming.embedded.logic.NatsStreamingServer;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
@@ -15,34 +15,30 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Provides the following features over and above the regular <em>Spring {@link org.springframework.test.context.TestContext}
  * Framework</em>:
  * <ul>
- * <li>Registers a {@link NatsServer} bean with the {@link NatsServer} bean name.
+ * <li>Registers a {@link NatsStreamingServer} bean with the {@link NatsStreamingServer} bean name.
  * </li>
  * </ul>
  * <p>
  * The typical usage of this annotation is like:
  * <pre class="code">
  * &#064;{@link org.springframework.boot.test.context.SpringBootTest}
- * &#064;{@link EnableNatsServer}
+ * &#064;{@link EnableNatsStreamingServer}
  * public class MyNatsTests {
  *
  *    &#064;{@link org.springframework.beans.factory.annotation.Autowired}
- *    private {@link NatsServer} natsServer;
+ *    private {@link NatsStreamingServer} natsServer;
  *
  * }
  * </pre>
- *
- * @author Yuna Morgenstern
- * @see NatsServer
- * @since 1.0
  */
 @Retention(RUNTIME)
 @Target(TYPE)
 @Documented
 @Inherited
-public @interface EnableNatsServer {
+public @interface EnableNatsStreamingServer {
 
     /**
-     * Passes port number to {@link NatsServer#setNatsServerConfig(String...)}
+     * Passes port number to {@link NatsStreamingServer#setConfig(String...)}
      */
     int port() default 4222;
 
@@ -57,9 +53,8 @@ public @interface EnableNatsServer {
     boolean randomPort() default false;
 
     /**
-     * Passes the original parameters to {@link NatsServer#setNatsServerConfig(String...)} for startup
-     * {@link berlin.yuna.natsserver.config.NatsServerConfig}
+     * Passes the original parameters to {@link NatsStreamingServer#setConfig(String...)} for startup
+     * {@link berlin.yuna.natsserver.config.NatsStreamingConfig}
      */
-    String[] natsServerConfig() default {};
-
+    String[] config() default {};
 }
