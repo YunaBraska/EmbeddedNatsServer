@@ -17,7 +17,8 @@ public class NatsStreamingServer extends NatsStreaming implements DisposableBean
     private final long timeoutMs;
 
     /**
-     * Create custom {@link NatsStreamingServer} with simplest configuration {@link NatsStreamingServer#setConfig(String...)}
+     * Create custom {@link NatsStreamingServer} with simplest configuration
+     * {@link NatsStreamingServer#config(String...)}
      *
      * @param timeoutMs        tear down timeout
      * @param natsServerConfig passes the original parameters to the server. example: port:4222, user:admin, password:admin

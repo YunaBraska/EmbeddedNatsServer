@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import static berlin.yuna.natsserver.config.NatsStreamingConfig.PORT;
@@ -52,11 +52,11 @@ class EnableNatsStreamingServerContextCustomizer implements ContextCustomizer {
         }
 
         final NatsStreamingServer natsServerBean = new NatsStreamingServer(enableNatsServer.timeoutMs());
-        natsServerBean.setConfig(enableNatsServer.config());
+        natsServerBean.config(enableNatsServer.config());
         natsServerBean.port(overwritePort(natsServerBean));
         String sourceUrl = overwriteSourceUrl(environment, natsServerBean.source());
         natsServerBean.source(!hasText(sourceUrl) ? natsServerBean.source() : sourceUrl);
-        natsServerBean.setConfig(mergeConfig(environment, natsServerBean.getConfig()));
+        natsServerBean.config(mergeConfig(environment, natsServerBean.config()));
 
         try {
             natsServerBean.start(enableNatsServer.timeoutMs());
@@ -82,12 +82,12 @@ class EnableNatsStreamingServerContextCustomizer implements ContextCustomizer {
     }
 
     private Map<NatsStreamingConfig, String> mergeConfig(final ConfigurableEnvironment environment, final Map<NatsStreamingConfig, String> originalConfig) {
-        Map<NatsStreamingConfig, String> mergedConfig = new HashMap<>(originalConfig);
+        Map<NatsStreamingConfig, String> mergedConfig = new EnumMap<>(originalConfig);
         for (NatsStreamingConfig NatsStreamingConfig : NatsStreamingConfig.values()) {
             String key = "nats.streaming.server." + NatsStreamingConfig.name().toLowerCase();
             String value = environment.getProperty(key);
-            if (hasText(value) && !mergedConfig.containsKey(NatsStreamingConfig)) {
-                mergedConfig.put(NatsStreamingConfig, value);
+            if (hasText(value)) {
+                mergedConfig.putIfAbsent(NatsStreamingConfig, value);
             }
         }
         return mergedConfig;

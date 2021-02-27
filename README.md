@@ -39,9 +39,34 @@ A spring wrapper of [Java-Nats-Streaming-Server](https://github.com/YunaBraska/n
 [gitter_shield]: https://img.shields.io/gitter/room/YunaBraska/nats-streaming-server-embedded?style=flat-square
 [gitter_link]: https://gitter.im/nats-streaming-server-embedded/Lobby
 
+### Family
+
+* Nats plain Java
+  * [Nats-Server](https://github.com/YunaBraska/nats-server)
+  * [Nats-Streaming-Server](https://github.com/YunaBraska/nats-streaming-server)
+* Nats for spring boot
+  * [Nats-Server-Embedded](https://github.com/YunaBraska/nats-server-embedded)
+  * [Nats-Streaming-Server-Embedded](https://github.com/YunaBraska/nats-streaming-server-embedded)
+
 ### Usage
+
+```xml
+
+<dependency>
+  <groupId>berlin.yuna</groupId>
+  <artifactId>nats-streaming-server-embedded</artifactId>
+  <version>0.20.11</version>
+</dependency>
+```
+
+[Get latest version][central_link]
+
+### Example
+
 * One annotation to set up the powerful [Nats streaming server](https://github.com/nats-io/nats-streaming-server)
+
 ```java
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @EnableNatsServer(port = 4222, natsServerConfig = {"user:admin", "pass:admin"})
@@ -49,9 +74,13 @@ public class SomeTest {
     [...]
 }
 ```
-* See [NatsStreamingConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingConfig.java) class for available properties
+
+*
+See [NatsStreamingConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingConfig.java)
+class for available properties
 * @EnableNatsServer is also reading spring config
 * @EnableNatsServer parameters are overwriting the spring properties
+
 ```yaml
 nats:
   server:
@@ -62,7 +91,10 @@ nats:
 nats.server.hb_fail_count=3
 ```
 
-* See [NatsStreamingSourceConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingSourceConfig.java) class for optional available nats version configuration
+*
+See [NatsStreamingSourceConfig](https://github.com/YunaBraska/nats-streaming-server/blob/master/src/main/java/berlin/yuna/natsserver/config/NatsStreamingSourceConfig.java)
+class for optional available nats version configuration
+
 ```yaml
 nats:
   source:
