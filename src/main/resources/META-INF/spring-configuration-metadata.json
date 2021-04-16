@@ -446,36 +446,36 @@
     "type" : "java.lang.String",
     "description" : "ARM SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-linux-arm64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-linux-arm64.zip"
   }, {
     "name" : "nats.streaming.source.linux",
     "type" : "java.lang.String",
     "description" : "LINUX SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-linux-amd64.zip"
   }, {
     "name" : "nats.streaming.source.mac",
     "type" : "java.lang.String",
     "description" : "MAC SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-darwin-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-darwin-amd64.zip"
   }, {
     "name" : "nats.streaming.source.windows",
     "type" : "java.lang.String",
     "description" : "WINDOWS SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-windows-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-windows-amd64.zip"
   }, {
     "name" : "nats.streaming.source.solaris",
     "type" : "java.lang.String",
     "description" : "SOLARIS SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-linux-amd64.zip"
   }, {
     "name" : "nats.streaming.source.default",
     "type" : "java.lang.String",
     "description" : "DEFAULT SOURCE URL",
     "sourceType" : "berlin.yuna.natsserver.config.NatsStreamingSourceConfig",
-    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.1/nats-streaming-server-v0.21.1-linux-amd64.zip"
+    "defaultValue" : "https://github.com/nats-io/nats-streaming-server/releases/download/v0.21.2/nats-streaming-server-v0.21.2-linux-amd64.zip"
   } ]
 }
